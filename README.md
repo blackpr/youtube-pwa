@@ -1,6 +1,6 @@
-# test-yt
+# youtube-pwa
 
-> My cool Nuxt.js project
+> [WIP]
 
 ## Build Setup
 
