@@ -42,6 +42,29 @@ async function start() {
     }
   })
 
+  app.get('/info/:videoId', async (req, res) => {
+    let videoId = req.params.videoId
+    if (videoId) {
+      let isValidId = ytdl.validateID(videoId)
+      if (isValidId) {
+        try {
+          let info = await ytdl.getInfo(videoId)
+          let filteredFormats = ytdl.chooseFormat(info.formats, {
+            quality: 'highest',
+            filter: 'audioandvideo'
+          })
+          res.json(filteredFormats)
+        } catch (error) {
+          res.status(500).json({ error: 'ytdl err' })
+        }
+      } else {
+        res.status(500).json({ error: 'invalid video id' })
+      }
+    } else {
+      res.status(500).json({ error: 'no search term' })
+    }
+  })
+
   app.get('/getInfoTest', async (req, res) => {
     let info = await ytdl.getInfo(
       'https://www.youtube.com/watch?v=3Sy8R82_fKw&list=PLiObRQ17fxxmpDrz1SxrpMPYnQMKyvK4'
