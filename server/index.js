@@ -2,6 +2,7 @@ const express = require('express')
 const consola = require('consola')
 const ytdl = require('ytdl-core')
 const ytsr = require('ytsr')
+const ytpl = require('ytpl')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
 const host = process.env.HOST || '127.0.0.1'
@@ -42,7 +43,7 @@ async function start() {
     }
   })
 
-  app.get('/info/:videoId', async (req, res) => {
+  app.get('/video/:videoId', async (req, res) => {
     let videoId = req.params.videoId
     if (videoId) {
       let isValidId = ytdl.validateID(videoId)
@@ -61,20 +62,39 @@ async function start() {
         res.status(500).json({ error: 'invalid video id' })
       }
     } else {
-      res.status(500).json({ error: 'no search term' })
+      res.status(500).json({ error: 'no video id' })
     }
   })
 
-  app.get('/getInfoTest', async (req, res) => {
-    let info = await ytdl.getInfo(
-      'https://www.youtube.com/watch?v=3Sy8R82_fKw&list=PLiObRQ17fxxmpDrz1SxrpMPYnQMKyvK4'
-    )
-    let format = ytdl.chooseFormat(info.formats, {
-      quality: 'highest',
-      filter: 'audioandvideo'
-    })
-    res.send(format)
+  app.get('/playlist/:playlistId', async (req, res) => {
+    let playlistId = req.params.playlistId
+    if (playlistId) {
+      try {
+        let playlistResults = await ytpl(playlistId)
+        res.json(playlistResults)
+      } catch (error) {
+        res.status(500).json({ error: 'ytpl error' })
+      }
+    } else {
+      res.status(500).json({ error: 'no playlist id' })
+    }
   })
+
+  app.get('/channel/:channelId', async (req, res) => {
+    let channelId = req.params.channelId
+    if (channelId) {
+      let channelUrl = `https://www.youtube.com/channel/${channelId}`
+      try {
+        let playlistResults = await ytpl(channelUrl)
+        res.json(playlistResults)
+      } catch (error) {
+        res.status(500).json({ error: 'ytpl error' })
+      }
+    } else {
+      res.status(500).json({ error: 'no channel id' })
+    }
+  })
+
   // Give nuxt middleware to express
   app.use(nuxt.render)
 
