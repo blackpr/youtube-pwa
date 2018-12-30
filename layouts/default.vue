@@ -36,7 +36,11 @@
     <v-footer :fixed="fixed" app>
       <span>
         made with ❤️ by
-        <a class="white" target="_blank" href="https://twitter.com/blackpr">blackpr</a>
+        <a
+          class="white--text"
+          target="_blank"
+          href="https://twitter.com/blackpr"
+        >blackpr</a>
       </span>
     </v-footer>
   </v-app>
