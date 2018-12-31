@@ -8,7 +8,7 @@
         <v-flex xs7>
           <v-card-title primary-title>
             <div>
-              <div class="headline">{{ item.id }} {{ title }}</div>
+              <div class="headline">{{ title }}</div>
               <div>{{ subtitle }}</div>
             </div>
           </v-card-title>
