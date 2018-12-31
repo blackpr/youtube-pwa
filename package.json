@@ -21,6 +21,7 @@
     "cross-env": "^5.2.0",
     "express": "^4.16.3",
     "lodash.get": "^4.4.2",
+    "lodash.uniqby": "^4.7.0",
     "nuxt": "^2.0.0",
     "vuetify": "^1.2.4",
     "ytdl-core": "^0.28.3",

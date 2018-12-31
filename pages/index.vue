@@ -10,22 +10,44 @@
         </v-card-text>
       </v-card>
     </v-flex>
+    <v-flex xs12>
+      <search-results v-if="hasSearch" :videos="videos"/>
+    </v-flex>
   </v-layout>
 </template>
 
 <script>
 import Logo from '~/components/Logo'
 import SearchInput from '~/components/SearchInput'
+import SearchResults from '~/components/SearchResults'
 
 export default {
+  name: 'IndexPage',
   components: {
     Logo,
-    SearchInput
+    SearchInput,
+    SearchResults
+  },
+  data() {
+    return {
+      loading: false,
+      results: null,
+      videos: []
+    }
+  },
+  computed: {
+    hasSearch() {
+      return this.$route.query.search_query
+    }
+  },
+  watch: {
+    $route: {
+      handler: 'searchForVideos',
+      immediate: true
+    }
   },
   methods: {
     onSearch(data) {
-      console.error('todo')
-      console.log(data)
       if (data.type === 'videoInList') {
         this.$router.push({
           path: `/video/${data.payload.videoId}`,
@@ -51,6 +73,30 @@ export default {
         })
       }
       if (data.type === 'text') {
+        this.updateSearchQuery(data.payload)
+      }
+    },
+    updateSearchQuery(data) {
+      let search_query = data
+      this.$router.push({
+        query: {
+          search_query
+        }
+      })
+    },
+    async searchForVideos() {
+      let searchquery = this.$route.query.search_query
+      this.loading = true
+      try {
+        let results = await this.$axios.$get(
+          `/getInfo/search?search_query=${searchquery}`
+        )
+        this.loading = false
+        this.results = results
+        this.videos = results.items
+      } catch (error) {
+        this.loading = false
+        console.log(error)
       }
     }
   }

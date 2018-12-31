@@ -1,0 +1,67 @@
+<template>
+  <nuxt-link :to="routeLink">
+    <v-card>
+      <v-layout>
+        <v-flex xs5>
+          <v-img :src="item.thumbnail || item.avatar" height="125px" contain/>
+        </v-flex>
+        <v-flex xs7>
+          <v-card-title primary-title>
+            <div>
+              <div class="headline">{{ item.id }} {{ title }}</div>
+              <div>{{ subtitle }}</div>
+            </div>
+          </v-card-title>
+        </v-flex>
+      </v-layout>
+    </v-card>
+  </nuxt-link>
+</template>
+
+<script>
+export default {
+  name: 'SearchResultsItem',
+  props: {
+    item: {
+      type: Object,
+      required: true
+    }
+  },
+  computed: {
+    routeLink() {
+      return `/${this.item.type}/${this.item.id}`
+    },
+    title() {
+      return this[`${this.item.type}Title`]
+    },
+    subtitle() {
+      return this[`${this.item.type}Subtitle`]
+    },
+    channelTitle() {
+      return this.item.name
+    },
+    videoTitle() {
+      return this.item.title
+    },
+    playlistTitle() {
+      return this.item.title
+    },
+    channelSubtitle() {
+      return `${this.item.followers} followers - ${this.item.videos} videos`
+    },
+    videoSubtitle() {
+      return `${this.item.author && this.item.author.name} - ${
+        this.item.views
+      } views - ${this.item.uploaded_at} - ${this.item.duration}`
+    },
+    playlistSubtitle() {
+      return `playlist - ${this.item.author && this.item.author.name} - ${
+        this.item.length
+      }`
+    }
+  }
+}
+</script>
+
+<style>
+</style>
