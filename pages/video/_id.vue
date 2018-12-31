@@ -1,7 +1,7 @@
 <template>
   <v-layout column>
     <v-flex xs12>
-      <video-player/>
+      <video-player :video="video" :playlist="playlist"/>
     </v-flex>
     <!-- todo: extract to list component and style -->
     <!-- description -->
