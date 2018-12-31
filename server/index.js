@@ -1,9 +1,6 @@
 const express = require('express')
 const youtubeRoutes = require('./youtube/youtubeRoutes')
 const consola = require('consola')
-const ytdl = require('ytdl-core')
-const ytsr = require('ytsr')
-const ytpl = require('ytpl')
 const { Nuxt, Builder } = require('nuxt')
 const app = express()
 const host = process.env.HOST || '127.0.0.1'

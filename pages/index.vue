@@ -5,7 +5,6 @@
         <logo/>
       </div>
       <v-card d-flex>
-        <v-card-title class="headline">Welcome to the Vuetify + Nuxt.js template</v-card-title>
         <v-card-text>
           <search-input @search="onSearch"/>
         </v-card-text>
@@ -26,9 +25,15 @@ export default {
   methods: {
     onSearch(data) {
       console.error('todo')
-      if (data.type === 'text') {
+      if (data.type === 'videoInList') {
       }
-      if (data.type === 'url') {
+      if (data.type === 'video') {
+      }
+      if (data.type === 'list') {
+      }
+      if (data.type === 'channel') {
+      }
+      if (data.type === 'text') {
       }
     }
   }
