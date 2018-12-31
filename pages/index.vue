@@ -25,9 +25,20 @@ export default {
   methods: {
     onSearch(data) {
       console.error('todo')
+      console.log(data)
       if (data.type === 'videoInList') {
+        this.$router.push({
+          path: `/video/${data.payload.videoId}`,
+          query: {
+            list: data.payload.listId,
+            index: data.payload.index
+          }
+        })
       }
       if (data.type === 'video') {
+        this.$router.push({
+          path: `/video/${data.payload.videoId}`
+        })
       }
       if (data.type === 'list') {
       }

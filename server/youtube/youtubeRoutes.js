@@ -33,7 +33,7 @@ router.get('/video/:videoId', async (req, res) => {
           quality: 'highest',
           filter: 'audioandvideo'
         })
-        res.json(filteredFormats)
+        res.json({ filteredFormats, info })
       } catch (error) {
         res.status(500).json({ error: 'ytdl err' })
       }
