@@ -1,8 +1,7 @@
 <template>
   <v-layout align-center justify-start column>
     <v-flex xs12>
-      <div>player placeholder</div>
-      <video ref="player" controls/>
+      <video ref="player" class="video-player" controls/>
     </v-flex>
   </v-layout>
 </template>
@@ -35,15 +34,16 @@ export default {
     let src = _get(this.video, 'filteredFormats.url')
     if (src) {
       this.videoPlayer.src = src
-      this.videoPlayer.play()
+      this.videoPlayer.play().catch(err => console.log(err))
       this.videoPlayer.addEventListener('ended', this.goToNextVideo)
+      this.setupMedia()
     }
   },
   methods: {
     goToNextVideo() {
       let index = +this.$route.query.index + 1
       let listId = this.$route.query.list
-      if (index <= this.playlist.items.length) {
+      if (listId && index <= _get(this.playlist, 'items.length', -1)) {
         let id = this.playlist.items[index - 1].id
         this.$router.push({
           path: `/video/${id}`,
@@ -57,7 +57,7 @@ export default {
     goToPreviousVideo() {
       let index = +this.$route.query.index - 1
       let listId = this.$route.query.list
-      if (index >= 1) {
+      if (listId && index >= 1) {
         let id = this.playlist.items[index - 1].id
         this.$router.push({
           path: `/video/${id}`,
@@ -67,10 +67,22 @@ export default {
           }
         })
       }
+    },
+    setupMedia() {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: _get(this.video, '', 'info.title'),
+          artist: _get(this.video, '', 'info.author.name'),
+          artwork: _get(this.video, '', 'info.thumbnail_url')
+        })
+      }
     }
   }
 }
 </script>
 
-<style>
+<style scopped>
+.video-player {
+  max-width: 100%;
+}
 </style>

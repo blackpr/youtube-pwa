@@ -38,12 +38,10 @@ export default {
   data() {
     return {
       clipped: false,
-      drawer: true,
+      drawer: false,
       fixed: false,
       items: [{ icon: 'search', title: 'Search', to: '/' }],
       miniVariant: false,
-      right: true,
-      rightDrawer: false,
       title: 'Youtube pwa client'
     }
   }
