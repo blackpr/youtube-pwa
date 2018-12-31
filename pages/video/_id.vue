@@ -55,7 +55,7 @@
     <v-flex xs12>
       <v-layout align-center justify-center row fill-height wrap>
         <v-flex v-for="video in related" :key="video.id" xs12 sm6 lg4>
-          <nuxt-link :to="video.list ? `/list/${video.list}` : `/video/${video.id}`">
+          <nuxt-link :to="video.list ? `/playlist/${video.list}` : `/video/${video.id}`">
             <v-card>
               <v-layout>
                 <v-flex xs5>

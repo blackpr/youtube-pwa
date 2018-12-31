@@ -41,8 +41,14 @@ export default {
         })
       }
       if (data.type === 'list') {
+        this.$router.push({
+          path: `/playlist/${data.payload.listId}`
+        })
       }
       if (data.type === 'channel') {
+        this.$router.push({
+          path: `/channel/${data.payload.channelId}`
+        })
       }
       if (data.type === 'text') {
       }
