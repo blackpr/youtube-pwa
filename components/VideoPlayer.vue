@@ -35,11 +35,38 @@ export default {
     let src = _get(this.video, 'filteredFormats.url')
     if (src) {
       this.videoPlayer.src = src
+      this.videoPlayer.play()
+      this.videoPlayer.addEventListener('ended', this.goToNextVideo)
     }
   },
   methods: {
-    onPlayButtonClick() {
-      console.log('onPlayButtonClick')
+    goToNextVideo() {
+      let index = +this.$route.query.index + 1
+      let listId = this.$route.query.list
+      if (index <= this.playlist.items.length) {
+        let id = this.playlist.items[index - 1].id
+        this.$router.push({
+          path: `/video/${id}`,
+          query: {
+            list: listId,
+            index
+          }
+        })
+      }
+    },
+    goToPreviousVideo() {
+      let index = +this.$route.query.index - 1
+      let listId = this.$route.query.list
+      if (index >= 1) {
+        let id = this.playlist.items[index - 1].id
+        this.$router.push({
+          path: `/video/${id}`,
+          query: {
+            list: listId,
+            index
+          }
+        })
+      }
     }
   }
 }
