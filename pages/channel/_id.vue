@@ -15,7 +15,7 @@
     <v-flex v-if="hasPlaylist" sm12 md9>
       <v-layout column>
         <v-flex v-for="video in playlist.items" :key="video.id" xs12 grow>
-          <nuxt-link :to="`/video/${video.id}`">
+          <nuxt-link :to="getRoute(video)">
             <v-card>
               <v-layout>
                 <v-flex xs5>
@@ -67,6 +67,16 @@ export default {
         return this.playlist.items.length
       }
       return null
+    }
+  },
+  methods: {
+    // todo extract list component move this to computed
+    getRoute(video) {
+      let url = new URL(video.url)
+      let params = new URLSearchParams(url.search)
+      let playlistId = params.get('list')
+      let index = params.get('index')
+      return `/video/${video.id}?list=${playlistId}&index=${index}`
     }
   }
 }
