@@ -71,9 +71,9 @@ export default {
     setupMedia() {
       if ('mediaSession' in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
-          title: _get(this.video, '', 'info.title'),
-          artist: _get(this.video, '', 'info.author.name'),
-          artwork: _get(this.video, '', 'info.thumbnail_url')
+          title: _get(this.video, 'info.title'),
+          artist: _get(this.video, 'info.author.name'),
+          artwork: _get(this.video, 'info.thumbnail_url')
         })
       }
     }
