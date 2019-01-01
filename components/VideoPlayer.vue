@@ -35,7 +35,6 @@ export default {
         let src = _get(this.video, 'filteredFormats.url')
         this.videoPlayer.src = src
         this.videoPlayer.play().catch(err => console.log(err))
-        this.setupMedia()
       }
     }
   },
@@ -44,12 +43,16 @@ export default {
     let src = _get(this.video, 'filteredFormats.url')
     if (src) {
       this.videoPlayer.src = src
-      this.videoPlayer.play().catch(err => console.log(err))
+      // this.videoPlayer.play().catch(err => console.log(err))
       this.videoPlayer.addEventListener('ended', this.goToNextVideo)
-      this.setupMedia()
+      this.videoPlayer.addEventListener('play', this.onPlayButtonClick)
     }
   },
   methods: {
+    onPlayButtonClick() {
+      this.setupMedia()
+      this.attachEventsToMedia()
+    },
     goToNextVideo() {
       let index = +this.$route.query.index + 1
       let listId = this.$route.query.list
@@ -82,11 +85,20 @@ export default {
     },
     setupMedia() {
       if ('mediaSession' in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({
+        let mediaObject = {
           title: _get(this.video, 'info.title'),
-          artist: _get(this.video, 'info.author.name'),
-          artwork: _get(this.video, 'info.thumbnail_url')
-        })
+          artist: _get(this.video, 'info.author.name')
+        }
+        navigator.mediaSession.metadata = new MediaMetadata(mediaObject)
+      }
+    },
+    attachEventsToMedia() {
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.setActionHandler('nexttrack', this.goToNextVideo)
+        navigator.mediaSession.setActionHandler(
+          'previoustrack',
+          this.goToPreviousVideo
+        )
       }
     }
   }
