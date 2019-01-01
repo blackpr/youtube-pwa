@@ -86,6 +86,7 @@ export default {
     },
     async searchForVideos() {
       let searchquery = this.$route.query.search_query
+      if (!searchquery) return
       this.loading = true
       try {
         let results = await this.$axios.$get(
