@@ -29,6 +29,9 @@ export default {
   },
   computed: {
     routeLink() {
+      if (this.item.type === 'video') {
+        return `/video?v=${this.item.id}`
+      }
       return `/${this.item.type}/${this.item.id}`
     },
     title() {
