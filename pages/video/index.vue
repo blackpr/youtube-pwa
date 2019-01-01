@@ -94,23 +94,6 @@ export default {
       playlist: null
     }
   },
-  // async asyncData({ $axios, params, query }) {
-  //   let videoId = params.id
-  //   let playlistId = query.list
-  //   if (playlistId) {
-  //     let videoPromise = $axios.$get(`/getInfo/video/${videoId}`)
-  //     let playlistPromise = $axios.$get(`/getInfo/playlist/${playlistId}`)
-  //     let [video, playlist] = await Promise.all([videoPromise, playlistPromise])
-  //     return { video, playlist }
-  //   } else {
-  //     try {
-  //       let video = await $axios.$get(`/getInfo/video/${videoId}`)
-  //       return { video }
-  //     } catch (error) {
-  //       console.log(error)
-  //     }
-  //   }
-  // },
   computed: {
     title() {
       return _get(this.video, 'info.title')
@@ -156,7 +139,6 @@ export default {
   },
   methods: {
     async fetchVideoFromQuery() {
-      console.log('created')
       let videoId = this.$route.query.v
       let playlistId = this.$route.query.list
       if (playlistId) {
