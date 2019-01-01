@@ -15,7 +15,7 @@
     <v-flex v-if="hasPlaylist" sm12 md9>
       <v-layout column>
         <v-flex v-for="(video, index) in playlist.items" :key="video.id" xs12 grow>
-          <nuxt-link :to="`/video/${video.id}?list=${playlist.id}&index=${index+1}`">
+          <nuxt-link :to="`/video?v=${video.id}&list=${playlist.id}&index=${index+1}`">
             <v-card>
               <v-layout>
                 <v-flex xs5>

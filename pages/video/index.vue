@@ -1,7 +1,7 @@
 <template>
   <v-layout column>
     <v-flex xs12>
-      <video-player :video="video" :playlist="playlist"/>
+      <video-player v-if="video" :video="video" :playlist="playlist"/>
     </v-flex>
     <!-- todo: extract to list component and style -->
     <!-- description -->
@@ -29,7 +29,7 @@
     <v-flex v-if="hasPlaylist" xs12>
       <v-layout align-center justify-center row fill-height wrap>
         <v-flex v-for="video in playlist.items" :key="video.id" xs12 sm6 lg4>
-          <nuxt-link :to="`/video/${video.id}`">
+          <nuxt-link :to="`/video?v=${video.id}`">
             <v-card>
               <v-layout>
                 <v-flex xs5>
@@ -55,7 +55,7 @@
     <v-flex xs12>
       <v-layout align-center justify-center row fill-height wrap>
         <v-flex v-for="video in related" :key="video.id" xs12 sm6 lg4>
-          <nuxt-link :to="video.list ? `/playlist/${video.list}` : `/video/${video.id}`">
+          <nuxt-link :to="video.list ? `/playlist/${video.list}` : `/video?v=${video.id}`">
             <v-card>
               <v-layout>
                 <v-flex xs5>
@@ -88,23 +88,29 @@ export default {
   components: {
     VideoPlayer
   },
-  async asyncData({ $axios, params, query }) {
-    let videoId = params.id
-    let playlistId = query.list
-    if (playlistId) {
-      let videoPromise = $axios.$get(`/getInfo/video/${videoId}`)
-      let playlistPromise = $axios.$get(`/getInfo/playlist/${playlistId}`)
-      let [video, playlist] = await Promise.all([videoPromise, playlistPromise])
-      return { video, playlist }
-    } else {
-      try {
-        let video = await $axios.$get(`/getInfo/video/${videoId}`)
-        return { video }
-      } catch (error) {
-        console.log(error)
-      }
+  data() {
+    return {
+      video: null,
+      playlist: null
     }
   },
+  // async asyncData({ $axios, params, query }) {
+  //   let videoId = params.id
+  //   let playlistId = query.list
+  //   if (playlistId) {
+  //     let videoPromise = $axios.$get(`/getInfo/video/${videoId}`)
+  //     let playlistPromise = $axios.$get(`/getInfo/playlist/${playlistId}`)
+  //     let [video, playlist] = await Promise.all([videoPromise, playlistPromise])
+  //     return { video, playlist }
+  //   } else {
+  //     try {
+  //       let video = await $axios.$get(`/getInfo/video/${videoId}`)
+  //       return { video }
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   }
+  // },
   computed: {
     title() {
       return _get(this.video, 'info.title')
@@ -140,6 +146,40 @@ export default {
         return relatedVideos
       }
       return []
+    }
+  },
+  watch: {
+    $route: {
+      handler: 'fetchVideoFromQuery',
+      immediate: true
+    }
+  },
+  methods: {
+    async fetchVideoFromQuery() {
+      console.log('created')
+      let videoId = this.$route.query.v
+      let playlistId = this.$route.query.list
+      if (playlistId) {
+        let videoPromise = this.$axios.$get(`/getInfo/video/${videoId}`)
+        let playlistPromise = this.$axios.$get(
+          `/getInfo/playlist/${playlistId}`
+        )
+        let [video, playlist] = await Promise.all([
+          videoPromise,
+          playlistPromise
+        ])
+        // return { video, playlist }
+        this.video = video
+        this.playlist = playlist
+      } else {
+        try {
+          let video = await this.$axios.$get(`/getInfo/video/${videoId}`)
+          // return { video }
+          this.video = video
+        } catch (error) {
+          console.log(error)
+        }
+      }
     }
   }
 }

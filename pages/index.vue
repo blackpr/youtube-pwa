@@ -50,8 +50,9 @@ export default {
     onSearch(data) {
       if (data.type === 'videoInList') {
         this.$router.push({
-          path: `/video/${data.payload.videoId}`,
+          path: `/video`,
           query: {
+            v: data.payload.videoId,
             list: data.payload.listId,
             index: data.payload.index
           }
@@ -59,7 +60,7 @@ export default {
       }
       if (data.type === 'video') {
         this.$router.push({
-          path: `/video/${data.payload.videoId}`
+          path: `/video?v=${data.payload.videoId}`
         })
       }
       if (data.type === 'list') {

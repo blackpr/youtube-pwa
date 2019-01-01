@@ -1,7 +1,7 @@
 <template>
   <v-layout align-center justify-start column>
     <v-flex xs12>
-      <video ref="player" class="video-player" controls/>
+      <video ref="player" class="video-player" controls autoplay/>
     </v-flex>
   </v-layout>
 </template>
@@ -29,6 +29,16 @@ export default {
       skipTime: 10
     }
   },
+  watch: {
+    video: {
+      handler() {
+        console.log('watach video probp')
+        let src = _get(this.video, 'filteredFormats.url')
+        this.videoPlayer.src = src
+        this.videoPlayer.play().catch(err => console.log(err))
+      }
+    }
+  },
   mounted() {
     this.videoPlayer = this.$refs.player
     let src = _get(this.video, 'filteredFormats.url')
@@ -41,13 +51,15 @@ export default {
   },
   methods: {
     goToNextVideo() {
+      console.log('goToNextVideo')
       let index = +this.$route.query.index + 1
       let listId = this.$route.query.list
       if (listId && index <= _get(this.playlist, 'items.length', -1)) {
         let id = this.playlist.items[index - 1].id
         this.$router.push({
-          path: `/video/${id}`,
+          path: '/video',
           query: {
+            v: id,
             list: listId,
             index
           }
@@ -60,8 +72,9 @@ export default {
       if (listId && index >= 1) {
         let id = this.playlist.items[index - 1].id
         this.$router.push({
-          path: `/video/${id}`,
+          path: '/video',
           query: {
+            v: id,
             list: listId,
             index
           }

@@ -76,7 +76,7 @@ export default {
       let params = new URLSearchParams(url.search)
       let playlistId = params.get('list')
       let index = params.get('index')
-      return `/video/${video.id}?list=${playlistId}&index=${index}`
+      return `/video?v=${video.id}&list=${playlistId}&index=${index}`
     }
   }
 }
