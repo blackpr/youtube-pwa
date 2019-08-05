@@ -24,7 +24,7 @@
     "lodash.uniqby": "^4.7.0",
     "nuxt": "^2.0.0",
     "vuetify": "^1.2.4",
-    "ytdl-core": "^0.28.3",
+    "ytdl-core": "^0.29.5",
     "ytpl": "^0.1.14",
     "ytsr": "^0.1.8"
   },
