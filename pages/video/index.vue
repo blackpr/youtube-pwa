@@ -1,28 +1,34 @@
 <template>
   <v-layout column>
     <v-flex xs12>
-      <video-player v-if="video" :video="video" :playlist="playlist"/>
+      <video-player v-if="video" :video="video" :playlist="playlist" />
     </v-flex>
     <!-- todo: extract to list component and style -->
     <!-- description -->
     <v-flex xs12>
-      <div class="title">{{ title }}</div>
+      <div class="title">
+        {{ title }}
+      </div>
       <div class="subheading">{{ views }} views</div>
-      <hr>
+      <hr />
     </v-flex>
     <v-flex xs12>
       <div>
-        <v-img :src="authorImage" height="60px" width="60px" contain/>
+        <v-img :src="authorImage" height="60px" width="60px" contain />
         <div>
           <div>
-            <div class="headline">{{ authorName }}</div>
+            <div class="headline">
+              {{ authorName }}
+            </div>
             <div>{{ date }}</div>
           </div>
         </div>
       </div>
     </v-flex>
     <v-flex xs12>
-      <div class="description">{{ description }}</div>
+      <div class="description">
+        {{ description }}
+      </div>
     </v-flex>
     <!-- todo: extract to list component and style -->
     <!-- playlist -->
@@ -33,12 +39,14 @@
             <v-card>
               <v-layout>
                 <v-flex xs5>
-                  <v-img :src="video.thumbnail" height="125px" contain/>
+                  <v-img :src="video.thumbnail" height="125px" contain />
                 </v-flex>
                 <v-flex xs7>
                   <v-card-title primary-title>
                     <div>
-                      <div class="headline">{{ video.title }}</div>
+                      <div class="headline">
+                        {{ video.title }}
+                      </div>
                       <div>{{ video.author && video.author.name }}</div>
                       <div>{{ video.duration }}</div>
                     </div>
@@ -55,18 +63,32 @@
     <v-flex xs12>
       <v-layout align-center justify-center row fill-height wrap>
         <v-flex v-for="video in related" :key="video.id" xs12 sm6 lg4>
-          <nuxt-link :to="video.list ? `/playlist/${video.list}` : `/video?v=${video.id}`">
+          <nuxt-link
+            :to="
+              video.list ? `/playlist/${video.list}` : `/video?v=${video.id}`
+            "
+          >
             <v-card>
               <v-layout>
                 <v-flex xs5>
-                  <v-img :src="video.iurlmq || video.playlist_iurlhq" height="125px" contain/>
+                  <v-img
+                    :src="video.iurlmq || video.playlist_iurlhq"
+                    height="125px"
+                    contain
+                  />
                 </v-flex>
                 <v-flex xs7>
                   <v-card-title primary-title>
                     <div>
-                      <div class="headline">{{ video.title || video.playlist_title }}</div>
+                      <div class="headline">
+                        {{ video.title || video.playlist_title }}
+                      </div>
                       <div>{{ video.author || 'playlist' }}</div>
-                      <div>{{ video.short_view_count_text || video.playlist_length }}</div>
+                      <div>
+                        {{
+                          video.short_view_count_text || video.playlist_length
+                        }}
+                      </div>
                     </div>
                   </v-card-title>
                 </v-flex>
@@ -167,7 +189,7 @@ export default {
 }
 </script>
 
-<style scopped >
+<style scopped>
 .description {
   white-space: pre-wrap;
 }

@@ -8,23 +8,38 @@
     <!-- todo: extract to list component and style -->
     <!-- playlist -->
     <v-flex v-if="hasPlaylist" sm12 md3>
-      <div class="title">{{ listTitle }}</div>
-      <div class="subheading">{{ listSum }} videos - {{ playlist.views }} views</div>
-      <div class="subheading">{{ playlist.last_updated }}</div>
+      <div class="title">
+        {{ listTitle }}
+      </div>
+      <div class="subheading">
+        {{ listSum }} videos - {{ playlist.views }} views
+      </div>
+      <div class="subheading">
+        {{ playlist.last_updated }}
+      </div>
     </v-flex>
     <v-flex v-if="hasPlaylist" sm12 md9>
       <v-layout column>
-        <v-flex v-for="(video, index) in playlist.items" :key="video.id" xs12 grow>
-          <nuxt-link :to="`/video?v=${video.id}&list=${playlist.id}&index=${index+1}`">
+        <v-flex
+          v-for="(video, index) in playlist.items"
+          :key="video.id"
+          xs12
+          grow
+        >
+          <nuxt-link
+            :to="`/video?v=${video.id}&list=${playlist.id}&index=${index + 1}`"
+          >
             <v-card>
               <v-layout>
                 <v-flex xs5>
-                  <v-img :src="video.thumbnail" height="125px" contain/>
+                  <v-img :src="video.thumbnail" height="125px" contain />
                 </v-flex>
                 <v-flex xs7>
                   <v-card-title primary-title>
                     <div>
-                      <div class="headline">{{ video.title }}</div>
+                      <div class="headline">
+                        {{ video.title }}
+                      </div>
                       <div>{{ video.author && video.author.name }}</div>
                       <div>{{ video.duration }}</div>
                     </div>
@@ -72,5 +87,4 @@ export default {
 }
 </script>
 
-<style scopped >
-</style>
+<style scopped></style>

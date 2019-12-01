@@ -3,12 +3,14 @@
     <v-card>
       <v-layout>
         <v-flex xs5>
-          <v-img :src="item.thumbnail || item.avatar" height="125px" contain/>
+          <v-img :src="item.thumbnail || item.avatar" height="125px" contain />
         </v-flex>
         <v-flex xs7>
           <v-card-title primary-title>
             <div>
-              <div class="headline">{{ title }}</div>
+              <div class="headline">
+                {{ title }}
+              </div>
               <div>{{ subtitle }}</div>
             </div>
           </v-card-title>
@@ -66,5 +68,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

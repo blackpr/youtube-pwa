@@ -2,16 +2,16 @@
   <v-layout column>
     <v-flex xs12>
       <div class="text-xs-center">
-        <logo/>
+        <logo />
       </div>
       <v-card d-flex>
         <v-card-text>
-          <search-input @search="onSearch"/>
+          <search-input @search="onSearch" />
         </v-card-text>
       </v-card>
     </v-flex>
     <v-flex xs12>
-      <search-results v-if="hasSearch" :videos="videos"/>
+      <search-results v-if="hasSearch" :videos="videos" />
     </v-flex>
   </v-layout>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <v-layout align-center justify-start column>
     <v-flex xs12>
-      <video ref="player" class="video-player" controls autoplay/>
+      <video ref="player" class="video-player" controls autoplay />
     </v-flex>
   </v-layout>
 </template>

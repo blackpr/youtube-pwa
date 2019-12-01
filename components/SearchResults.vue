@@ -1,7 +1,7 @@
 <template>
   <v-layout column>
     <v-flex v-for="video in filteredVideos" :key="video.id" xs12 grow>
-      <search-results-item :item="video"/>
+      <search-results-item :item="video" />
     </v-flex>
   </v-layout>
 </template>
@@ -52,5 +52,4 @@ export default {
 }
 </script>
 
-<style>
-</style>
+<style></style>

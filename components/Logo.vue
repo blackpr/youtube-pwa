@@ -1,6 +1,7 @@
 <template>
-  <div class="headline">Youtube PWA</div>
+  <div class="headline">
+    Youtube PWA
+  </div>
 </template>
 
-<style>
-</style>
+<style></style>
