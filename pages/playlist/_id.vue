@@ -59,15 +59,7 @@ import _get from 'lodash.get'
 
 export default {
   name: 'PlaylistPage',
-  async asyncData({ $axios, params }) {
-    let playlistId = params.id
-    try {
-      let playlist = await $axios.$get(`/getInfo/playlist/${playlistId}`)
-      return { playlist }
-    } catch (error) {
-      console.log(error)
-    }
-  },
+
   computed: {
     hasPlaylist() {
       return (
@@ -82,6 +74,16 @@ export default {
         return this.playlist.items.length
       }
       return null
+    }
+  },
+
+  async asyncData({ $axios, params }) {
+    let playlistId = params.id
+    try {
+      let playlist = await $axios.$get(`/getInfo/playlist/${playlistId}`)
+      return { playlist }
+    } catch (error) {
+      console.log(error)
     }
   }
 }

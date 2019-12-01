@@ -14,8 +14,8 @@ router.get('/search', async (req, res) => {
     try {
       let searchResults = await ytsr(searchTerm, { nextpageRef, limit: 40 })
       res.json(searchResults)
-    } catch (error) {
-      res.status(500).json({ error: 'ytsr err', error })
+    } catch (err) {
+      res.status(500).json({ error: 'ytsr err', err })
     }
   } else {
     res.status(500).json({ error: 'no search term' })

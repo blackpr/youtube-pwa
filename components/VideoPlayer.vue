@@ -89,6 +89,7 @@ export default {
           title: _get(this.video, 'info.title'),
           artist: _get(this.video, 'info.author.name')
         }
+        // eslint-disable-next-line no-undef
         navigator.mediaSession.metadata = new MediaMetadata(mediaObject)
       }
     },

@@ -34,21 +34,21 @@
     <!-- playlist -->
     <v-flex v-if="hasPlaylist" xs12>
       <v-layout align-center justify-center row fill-height wrap>
-        <v-flex v-for="video in playlist.items" :key="video.id" xs12 sm6 lg4>
-          <nuxt-link :to="`/video?v=${video.id}`">
+        <v-flex v-for="vid in playlist.items" :key="vid.id" xs12 sm6 lg4>
+          <nuxt-link :to="`/vid?v=${vid.id}`">
             <v-card>
               <v-layout>
                 <v-flex xs5>
-                  <v-img :src="video.thumbnail" height="125px" contain />
+                  <v-img :src="vid.thumbnail" height="125px" contain />
                 </v-flex>
                 <v-flex xs7>
                   <v-card-title primary-title>
                     <div>
                       <div class="headline">
-                        {{ video.title }}
+                        {{ vid.title }}
                       </div>
-                      <div>{{ video.author && video.author.name }}</div>
-                      <div>{{ video.duration }}</div>
+                      <div>{{ vid.author && vid.author.name }}</div>
+                      <div>{{ vid.duration }}</div>
                     </div>
                   </v-card-title>
                 </v-flex>
@@ -62,17 +62,15 @@
     <!-- related -->
     <v-flex xs12>
       <v-layout align-center justify-center row fill-height wrap>
-        <v-flex v-for="video in related" :key="video.id" xs12 sm6 lg4>
+        <v-flex v-for="vid in related" :key="vid.id" xs12 sm6 lg4>
           <nuxt-link
-            :to="
-              video.list ? `/playlist/${video.list}` : `/video?v=${video.id}`
-            "
+            :to="vid.list ? `/playlist/${vid.list}` : `/vid?v=${vid.id}`"
           >
             <v-card>
               <v-layout>
                 <v-flex xs5>
                   <v-img
-                    :src="video.iurlmq || video.playlist_iurlhq"
+                    :src="vid.iurlmq || vid.playlist_iurlhq"
                     height="125px"
                     contain
                   />
@@ -81,13 +79,11 @@
                   <v-card-title primary-title>
                     <div>
                       <div class="headline">
-                        {{ video.title || video.playlist_title }}
+                        {{ vid.title || vid.playlist_title }}
                       </div>
-                      <div>{{ video.author || 'playlist' }}</div>
+                      <div>{{ vid.author || 'playlist' }}</div>
                       <div>
-                        {{
-                          video.short_view_count_text || video.playlist_length
-                        }}
+                        {{ vid.short_view_count_text || vid.playlist_length }}
                       </div>
                     </div>
                   </v-card-title>
