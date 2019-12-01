@@ -7,6 +7,9 @@
     "url": "https://github.com/blackpr",
     "twitter": "https://twitter.com/blackpr"
   },
+  "engines": {
+    "node": ">=10.13.0"
+  },
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
