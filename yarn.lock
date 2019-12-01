@@ -957,7 +957,7 @@
     webpack-node-externals "^1.7.2"
     webpackbar "^4.0.0"
 
-"@nuxtjs/axios@^5.8.0":
+"@nuxtjs/axios@^5.3.6":
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/@nuxtjs/axios/-/axios-5.8.0.tgz#78e5abd300bfd6f622e3006ab6f4ef4ef5ff9fdf"
   integrity sha512-1+I2mTUuydKkY/Jz1InpLpkGWpReO5USNWxZpPaQL3py4Kv3sDF83ll/uHGngosyXr+OKBXoALRLCjmwSY77lg==
@@ -967,6 +967,14 @@
     axios-retry "^3.1.2"
     consola "^2.10.1"
     defu "^0.0.3"
+
+"@nuxtjs/dotenv@^1.4.0":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/dotenv/-/dotenv-1.4.1.tgz#dd5abb98e22cc7ae27139d3aa606151034293128"
+  integrity sha512-DpdObsvRwC8d89I9mzz6pBg6e/PEXHazDM57DOI1mmML2ZjHfQ/DvkjlSzUL7T+TnW3b/a4Ks5wQx08DqFBmeQ==
+  dependencies:
+    consola "^2.10.1"
+    dotenv "^8.1.0"
 
 "@nuxtjs/proxy@^1.3.3":
   version "1.3.3"
@@ -2336,12 +2344,12 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cross-env@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-6.0.3.tgz#4256b71e49b3a40637a0ce70768a6ef5c72ae941"
-  integrity sha512-+KqxF6LCvfhWvADcDPqo64yVIB31gv/jQulX2NGzKS/g3GEVz6/pt4wjHFtFWsHMddebWD/sDthJemzM4MaAag==
+cross-env@^5.2.0:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-5.2.1.tgz#b2c76c1ca7add66dc874d11798466094f551b34d"
+  integrity sha512-1yHhtcfAd1r4nwQgknowuUNfIT9E8dOMMspC36g45dN+iD1blloi7xp8X/xAIDnjHWyt1uQ8PHk2fkNaym7soQ==
   dependencies:
-    cross-spawn "^7.0.0"
+    cross-spawn "^6.0.5"
 
 cross-spawn@^5.0.1:
   version "5.1.0"
@@ -2820,6 +2828,11 @@ dot-prop@^4.1.0, dot-prop@^4.1.1:
   dependencies:
     is-obj "^1.0.0"
 
+dotenv@^8.1.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
+  integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
+
 duplexer3@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/duplexer3/-/duplexer3-0.1.4.tgz#ee01dd1cac0ed3cbc7fdbea37dc0a8f1ce002ce2"
@@ -3200,7 +3213,7 @@ expand-brackets@^2.1.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-express@^4.16.3:
+express@^4.16.3, express@^4.16.4:
   version "4.17.1"
   resolved "https://registry.yarnpkg.com/express/-/express-4.17.1.tgz#4491fc38605cf51f8629d39c2b5d026f98a4c134"
   integrity sha512-mHJ9O79RqluphRrcw2X/GTh3k9tVv8YcoyY4Kkh4WDMUYKRZUq0h1o0w2rrrxBqM7VoeUVqgb27xlEMXTnYt4g==

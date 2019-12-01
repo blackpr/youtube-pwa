@@ -1,4 +1,5 @@
 const pkg = require('./package')
+import serverRoutes from './server'
 
 module.exports = {
   mode: 'universal',
@@ -43,15 +44,36 @@ module.exports = {
    */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    // Doc: https://github.com/nuxt-community/dotenv-module
+    '@nuxtjs/dotenv'
   ],
   /*
    ** Axios module configuration
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    baseURL: '/'
+    baseURL: '/api/'
   },
+
+  // 'http://localhost:3000/getInfo/video/ZNGhWgIINGM'
+  serverMiddleware: [...serverRoutes],
+  // serverMiddleware: [
+  //   { path: '/api/hello', handler: '~/api/hello.js' },
+  //   { path: '/api/getInfo/search', handler: '~/api/getInfo/search.js' },
+  //   {
+  //     path: '/api/getInfo/channel/:channelId',
+  //     handler: '~/api/getInfo/channel/[channelId].js'
+  //   },
+  //   {
+  //     path: '/api/getInfo/playlist/:[playlistId]',
+  //     handler: '~/api/getInfo/playlist/[playlistId].js'
+  //   },
+  //   {
+  //     path: '/api/getInfo/video/:videoId',
+  //     handler: '~/api/getInfo/video/[videoId].js'
+  //   }
+  // ],
 
   /*
    ** Build configuration

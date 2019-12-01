@@ -1,4 +1,13 @@
 {
-  "version": 1,
-  "alias": "youtube-pwa.now.sh"
+  "version": 2,
+  "alias": "youtube-pwa.now.sh",
+  "builds": [
+    {
+      "src": "nuxt.config.js",
+      "use": "@nuxtjs/now-builder",
+      "config": {
+        "serverFiles": ["./server/**/*"]
+      }
+    }
+  ]
 }
