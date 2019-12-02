@@ -27,7 +27,10 @@
     <v-row>
       <v-col>
         <div class="description">
-          {{ description }}
+          {{ descriptionComputed }}
+          <div v-if="hasMore">
+            <a @click.prevent="showMore = !showMore">{{ showMoreLessText }}</a>
+          </div>
         </div>
       </v-col>
     </v-row>
@@ -89,7 +92,8 @@ export default {
   data() {
     return {
       video: null,
-      playlist: null
+      playlist: null,
+      showMore: null
     }
   },
   computed: {
@@ -119,7 +123,28 @@ export default {
       return null
     },
     description() {
-      return _get(this.video, 'info.description')
+      return _get(this.video, 'info.description', '')
+    },
+    descriptionShort() {
+      if (!this.description) return ''
+      let maxLength = 300
+      let trimmedString = this.description.substr(0, maxLength)
+      trimmedString = trimmedString.substr(
+        0,
+        Math.min(trimmedString.length, trimmedString.lastIndexOf(' '))
+      )
+      return trimmedString
+    },
+    hasMore() {
+      return this.description.length >= 300
+    },
+    descriptionComputed() {
+      if (this.showMore) return this.description
+      return this.descriptionShort
+    },
+    showMoreLessText() {
+      if (this.showMore) return 'SHOW LESS'
+      return 'SHOW MORE'
     },
     related() {
       let relatedVideos = _get(this.video, 'info.related_videos')
