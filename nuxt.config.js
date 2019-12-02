@@ -1,4 +1,5 @@
 // const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
+import colors from 'vuetify/lib/util/colors'
 const pkg = require('./package')
 import serverRoutes from './server'
 
@@ -80,6 +81,16 @@ module.exports = {
    ** Build configuration
    */
   buildModules: ['@nuxtjs/vuetify'],
+  vuetify: {
+    theme: {
+      dark: true,
+      themes: {
+        dark: {
+          primary: colors.pink.accent2
+        }
+      }
+    }
+  },
   build: {
     // transpile: ['vuetify/lib'],
     // plugins: [new VuetifyLoaderPlugin()],
