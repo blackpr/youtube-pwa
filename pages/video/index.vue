@@ -29,7 +29,9 @@
         <div class="description">
           {{ descriptionComputed }}
           <div v-if="hasMore">
-            <a @click.prevent="showMore = !showMore">{{ showMoreLessText }}</a>
+            <v-btn @click.prevent="showMore = !showMore">
+              {{ showMoreLessText }}
+            </v-btn>
           </div>
         </div>
       </v-col>
