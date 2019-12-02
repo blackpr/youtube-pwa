@@ -65,6 +65,15 @@ export default {
         return this.playlist.items.length
       }
       return null
+    },
+    canDownload() {
+      if (!this.playlist) return false
+      if (!this.playlist.items) return false
+      if (!this.playlist.items.length) return false
+      return 'BackgroundFetchManager' in self
+    },
+    playlistVideoIds() {
+      return _get(this.playlist, 'items', []).map(item => item.id)
     }
   },
 
@@ -75,6 +84,29 @@ export default {
       return { playlist }
     } catch (error) {
       console.log(error)
+    }
+  },
+
+  mounted() {
+    this.getPlaylistVideoUrls()
+  },
+
+  methods: {
+    async getPlaylistVideoUrls() {
+      if (!this.canDownload) return
+      let videosPromises = this.playlistVideoIds.map(id =>
+        this.$axios.$get(`/getInfo/video/${id}`)
+      )
+      let videosResults = await Promise.all(videosPromises)
+      if (videosResults && videosResults.length) {
+        let videoUrls = videosResults.map(vr => ({
+          title: _get(vr, 'info.title'),
+          url: _get(vr, 'filteredFormats.url'),
+          contentLength: _get(vr, 'filteredFormats.contentLength')
+        }))
+        console.log(videoUrls)
+      }
+      // console.log(videosResults)
     }
   }
 }
