@@ -1,100 +1,80 @@
 <template>
-  <v-layout column>
-    <v-flex xs12>
-      <video-player v-if="video" :video="video" :playlist="playlist" />
-    </v-flex>
+  <v-container column>
+    <video-player v-if="video" :video="video" :playlist="playlist" />
+
     <!-- todo: extract to list component and style -->
     <!-- description -->
-    <v-flex xs12>
-      <div class="title">
-        {{ title }}
-      </div>
-      <div class="subheading">{{ views }} views</div>
-      <hr />
-    </v-flex>
-    <v-flex xs12>
-      <div>
-        <v-img :src="authorImage" height="60px" width="60px" contain />
-        <div>
-          <div>
-            <div class="headline">
-              {{ authorName }}
-            </div>
-            <div>{{ date }}</div>
-          </div>
+    <v-row>
+      <v-col>
+        <div class="title">
+          {{ title }}
         </div>
-      </div>
-    </v-flex>
-    <v-flex xs12>
-      <div class="description">
-        {{ description }}
-      </div>
-    </v-flex>
+        <div class="subtitle-1">{{ views }} views</div>
+        <hr />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col class="d-flex">
+        <v-img :src="authorImage" height="60px" width="60px" max-width="60px" />
+        <div class="ml-2">
+          <div class="headline">
+            {{ authorName }}
+          </div>
+          <div>{{ date }}</div>
+        </div>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col>
+        <div class="description">
+          {{ description }}
+        </div>
+      </v-col>
+    </v-row>
     <!-- todo: extract to list component and style -->
     <!-- playlist -->
-    <v-flex v-if="hasPlaylist" xs12>
-      <v-layout align-center justify-center row fill-height wrap>
-        <v-flex v-for="vid in playlist.items" :key="vid.id" xs12 sm6 lg4>
-          <nuxt-link :to="`/vid?v=${vid.id}`">
-            <v-card>
-              <v-layout>
-                <v-flex xs5>
-                  <v-img :src="vid.thumbnail" height="125px" contain />
-                </v-flex>
-                <v-flex xs7>
-                  <v-card-title primary-title>
-                    <div>
-                      <div class="headline">
-                        {{ vid.title }}
-                      </div>
-                      <div>{{ vid.author && vid.author.name }}</div>
-                      <div>{{ vid.duration }}</div>
-                    </div>
-                  </v-card-title>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </nuxt-link>
-        </v-flex>
-      </v-layout>
-    </v-flex>
+    <v-row v-if="hasPlaylist" align="stretch">
+      <v-col v-for="vid in playlist.items" :key="vid.id" cols="12" md="4">
+        <nuxt-link :to="`/video?v=${vid.id}`">
+          <v-card class="mx-auto" height="100%">
+            <v-img :src="vid.thumbnail" height="125px"> </v-img>
+            <v-card-title>
+              {{ vid.title }}
+            </v-card-title>
+            <v-card-subtitle pb-0>
+              <div>{{ vid.author && vid.author.name }}</div>
+              <div>{{ vid.duration }}</div>
+            </v-card-subtitle>
+          </v-card>
+        </nuxt-link>
+      </v-col>
+    </v-row>
     <!-- todo: extract to list component and style -->
     <!-- related -->
-    <v-flex xs12>
-      <v-layout align-center justify-center row fill-height wrap>
-        <v-flex v-for="vid in related" :key="vid.id" xs12 sm6 lg4>
-          <nuxt-link
-            :to="vid.list ? `/playlist/${vid.list}` : `/vid?v=${vid.id}`"
-          >
-            <v-card>
-              <v-layout>
-                <v-flex xs5>
-                  <v-img
-                    :src="vid.iurlmq || vid.playlist_iurlhq"
-                    height="125px"
-                    contain
-                  />
-                </v-flex>
-                <v-flex xs7>
-                  <v-card-title primary-title>
-                    <div>
-                      <div class="headline">
-                        {{ vid.title || vid.playlist_title }}
-                      </div>
-                      <div>{{ vid.author || 'playlist' }}</div>
-                      <div>
-                        {{ vid.short_view_count_text || vid.playlist_length }}
-                      </div>
-                    </div>
-                  </v-card-title>
-                </v-flex>
-              </v-layout>
-            </v-card>
-          </nuxt-link>
-        </v-flex>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+    <v-row align="stretch">
+      <v-col v-for="vid in related" :key="vid.id" cols="12" md="4">
+        <nuxt-link
+          :to="vid.list ? `/playlist/${vid.list}` : `/video?v=${vid.id}`"
+        >
+          <v-card class="mx-auto" height="100%">
+            <v-img
+              :src="vid.video_thumbnail || vid.iurlmq || vid.playlist_iurlhq"
+              height="125px"
+            />
+            <v-card-title>
+              {{ vid.title || vid.playlist_title }}
+            </v-card-title>
+            <v-card-subtitle pb-0>
+              <div>{{ vid.author || 'playlist' }}</div>
+              <div>
+                {{ vid.short_view_count_text || vid.playlist_length }}
+              </div>
+            </v-card-subtitle>
+          </v-card>
+        </nuxt-link>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

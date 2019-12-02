@@ -1,13 +1,8 @@
 <template>
-  <v-layout
-    :row="$vuetify.breakpoint.mdAndUp"
-    :column="$vuetify.breakpoint.smAndDown"
-    align-start
-    justify-start
-  >
+  <v-row>
     <!-- todo: extract to list component and style -->
     <!-- playlist -->
-    <v-flex v-if="hasPlaylist" sm12 md3>
+    <v-col v-if="hasPlaylist" cols="12" md="3">
       <div class="title">
         {{ listTitle }}
       </div>
@@ -17,34 +12,35 @@
       <div class="subheading">
         {{ playlist.last_updated }}
       </div>
-    </v-flex>
-    <v-flex v-if="hasPlaylist" sm12 md9>
-      <v-layout column>
-        <v-flex v-for="video in playlist.items" :key="video.id" xs12 grow>
+    </v-col>
+    <v-col v-if="hasPlaylist" cols="12" md="9">
+      <v-row v-for="video in playlist.items" :key="video.id">
+        <v-col>
           <nuxt-link :to="getRoute(video)">
             <v-card>
-              <v-layout>
-                <v-flex xs5>
-                  <v-img :src="video.thumbnail" height="125px" contain />
-                </v-flex>
-                <v-flex xs7>
+              <span class="d-flex">
+                <v-img
+                  :src="video.thumbnail"
+                  height="125px"
+                  max-width="250px"
+                  contain
+                />
+                <span>
                   <v-card-title primary-title>
-                    <div>
-                      <div class="headline">
-                        {{ video.title }}
-                      </div>
-                      <div>{{ video.author && video.author.name }}</div>
-                      <div>{{ video.duration }}</div>
-                    </div>
+                    {{ video.title }}
                   </v-card-title>
-                </v-flex>
-              </v-layout>
+                  <v-card-subtitle>
+                    <div>{{ video.author && video.author.name }}</div>
+                    <div>{{ video.duration }}</div>
+                  </v-card-subtitle>
+                </span>
+              </span>
             </v-card>
           </nuxt-link>
-        </v-flex>
-      </v-layout>
-    </v-flex>
-  </v-layout>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

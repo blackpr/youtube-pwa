@@ -1,30 +1,27 @@
 <template>
-  <v-layout column>
-    <v-flex xs12>
-      <div class="text-xs-center">
-        <logo />
-      </div>
-      <v-card d-flex>
-        <v-card-text>
-          <search-input @search="onSearch" />
-        </v-card-text>
-      </v-card>
-    </v-flex>
-    <v-flex xs12>
+  <v-container>
+    <v-row>
+      <v-col>
+        <v-card>
+          <v-card-text>
+            <search-input @search="onSearch" />
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-row>
       <search-results v-if="hasSearch" :videos="videos" />
-    </v-flex>
-  </v-layout>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import Logo from '~/components/Logo'
 import SearchInput from '~/components/SearchInput'
 import SearchResults from '~/components/SearchResults'
 
 export default {
   name: 'IndexPage',
   components: {
-    Logo,
     SearchInput,
     SearchResults
   },

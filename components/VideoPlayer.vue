@@ -1,9 +1,9 @@
 <template>
-  <v-layout align-center justify-start column>
-    <v-flex xs12>
+  <v-row align="center">
+    <v-col class="video-col">
       <video ref="player" class="video-player" controls autoplay />
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </template>
 
 <script>
@@ -108,6 +108,9 @@ export default {
 
 <style scopped>
 .video-player {
-  max-width: 100%;
+  width: 100%;
+}
+.video-col {
+  text-align: center;
 }
 </style>

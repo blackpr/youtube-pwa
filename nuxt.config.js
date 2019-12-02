@@ -1,3 +1,4 @@
+// const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
 const pkg = require('./package')
 import serverRoutes from './server'
 
@@ -37,7 +38,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['@/plugins/vuetify'],
+  // plugins: ['@/plugins/vuetify'],
 
   /*
    ** Nuxt.js modules
@@ -78,7 +79,15 @@ module.exports = {
   /*
    ** Build configuration
    */
+  buildModules: ['@nuxtjs/vuetify'],
   build: {
+    // transpile: ['vuetify/lib'],
+    // plugins: [new VuetifyLoaderPlugin()],
+    // loaders: {
+    //   stylus: {
+    //     import: ['~assets/style/variables.styl']
+    //   }
+    // },
     /*
      ** You can extend webpack config here
      */

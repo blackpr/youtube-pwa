@@ -1,21 +1,20 @@
 <template>
   <nuxt-link :to="routeLink">
-    <v-card>
-      <v-layout>
-        <v-flex xs5>
-          <v-img :src="item.thumbnail || item.avatar" height="125px" contain />
-        </v-flex>
-        <v-flex xs7>
-          <v-card-title primary-title>
-            <div>
-              <div class="headline">
-                {{ title }}
-              </div>
-              <div>{{ subtitle }}</div>
-            </div>
+    <v-card class="pa-2">
+      <span class="d-flex">
+        <v-img
+          :src="item.thumbnail || item.avatar"
+          height="125px"
+          max-width="250px"
+          contain
+        />
+        <span>
+          <v-card-title>
+            {{ title }}
           </v-card-title>
-        </v-flex>
-      </v-layout>
+          <v-card-subtitle>{{ subtitle }}</v-card-subtitle>
+        </span>
+      </span>
     </v-card>
   </nuxt-link>
 </template>

@@ -1,9 +1,11 @@
 <template>
-  <v-layout column>
-    <v-flex v-for="video in filteredVideos" :key="video.id" xs12 grow>
-      <search-results-item :item="video" />
-    </v-flex>
-  </v-layout>
+  <v-container>
+    <v-row v-for="video in filteredVideos" :key="video.id">
+      <v-col>
+        <search-results-item :item="video" />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

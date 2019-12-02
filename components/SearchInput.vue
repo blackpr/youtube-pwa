@@ -2,7 +2,6 @@
   <v-text-field
     v-model="message"
     :append-outer-icon="message ? 'send' : ''"
-    box
     clear-icon="cancel"
     clearable
     label="Search for video or paste a youtube link"
