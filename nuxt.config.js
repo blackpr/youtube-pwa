@@ -48,8 +48,26 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    // Doc: https://pwa.nuxtjs.org/setup.html
+    '@nuxtjs/pwa'
   ],
+
+  plugins: [
+    {
+      src: '~/plugins/sw.js',
+      ssr: false
+    }
+  ],
+
+  pwa: {
+    workbox: {
+      importScripts: ['custom-sw.js'],
+      // todo!!!!: disable this
+      // https://pwa.nuxtjs.org/modules/workbox.html#dev
+      dev: true
+    }
+  },
   /*
    ** Axios module configuration
    */

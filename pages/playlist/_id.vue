@@ -12,6 +12,7 @@
       <div class="subheading">
         {{ playlist.last_updated }}
       </div>
+      <v-btn @click="getPlaylistVideoUrls">download</v-btn>
     </v-col>
     <v-col v-if="hasPlaylist" cols="12" md="9">
       <v-row v-for="(video, index) in playlist.items" :key="video.id">
@@ -87,11 +88,43 @@ export default {
     }
   },
 
-  mounted() {
-    this.getPlaylistVideoUrls()
-  },
-
   methods: {
+    async monitorBgFetch(bgFetch) {
+      function updateItem(id, state) {
+        console.log({ id, state })
+      }
+      function doUpdate() {
+        const update = {}
+
+        if (bgFetch.result === '') {
+          update.state = 'fetching'
+          update.progress = bgFetch.downloaded / bgFetch.downloadTotal
+        } else if (bgFetch.result === 'success') {
+          update.state = 'fetching'
+          update.progress = 1
+        } else if (bgFetch.failureReason === 'aborted') {
+          // Failure
+          update.state = 'not-stored'
+        } else {
+          // other failure
+          update.state = 'failed'
+        }
+
+        updateItem(bgFetch.id, update)
+      }
+
+      doUpdate()
+
+      bgFetch.addEventListener('progress', doUpdate)
+      const channel = new BroadcastChannel(bgFetch.id)
+
+      channel.onmessage = event => {
+        if (!event.data.stored) return
+        bgFetch.removeEventListener('progress', doUpdate)
+        channel.close()
+        updateItem(bgFetch.id, { state: 'stored' })
+      }
+    },
     async getPlaylistVideoUrls() {
       if (!this.canDownload) return
       let videosPromises = this.playlistVideoIds.map(id =>
@@ -100,11 +133,29 @@ export default {
       let videosResults = await Promise.all(videosPromises)
       if (videosResults && videosResults.length) {
         let videoUrls = videosResults.map(vr => ({
+          id: _get(vr, 'info.video_id'),
           title: _get(vr, 'info.title'),
           url: _get(vr, 'filteredFormats.url'),
           contentLength: _get(vr, 'filteredFormats.contentLength')
         }))
         console.log(videoUrls)
+        const reg = await navigator.serviceWorker.ready
+        console.log(`${this.playlist.id}-${videoUrls[0].id}`)
+        console.log(videoUrls[0].url)
+        console.log({
+          title: videoUrls[0].title,
+          downloadTotal: videoUrls[0].contentLength
+        })
+        const bgFetch = await reg.backgroundFetch.fetch(
+          `${this.playlist.id}-${videoUrls[0].id}`,
+          [videoUrls[0].url],
+          {
+            title: videoUrls[0].title,
+            downloadTotal: videoUrls[0].contentLength
+          }
+        )
+
+        this.monitorBgFetch(bgFetch)
       }
       // console.log(videosResults)
     }
