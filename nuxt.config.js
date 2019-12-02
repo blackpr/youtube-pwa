@@ -1,10 +1,10 @@
 // const VuetifyLoaderPlugin = require('vuetify-loader/lib/plugin')
-import colors from 'vuetify/lib/util/colors'
+// import colors from 'vuetify/lib/util/colors'
 const pkg = require('./package')
 import serverRoutes from './server'
 
 module.exports = {
-  mode: 'universal',
+  mode: 'spa',
 
   /*
    ** Headers of the page
@@ -86,7 +86,7 @@ module.exports = {
       dark: true,
       themes: {
         dark: {
-          primary: colors.pink.accent2
+          primary: '#FF4081'
         }
       }
     }
