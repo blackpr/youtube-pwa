@@ -20,7 +20,7 @@
             :to="`/video?v=${video.id}&list=${playlist.id}&index=${index + 1}`"
           >
             <v-card>
-              <span class="d-flex">
+              <span class="d-md-flex">
                 <v-img
                   :src="video.thumbnail"
                   height="125px"

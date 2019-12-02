@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="routeLink">
     <v-card class="pa-2">
-      <span class="d-flex">
+      <span class="d-md-flex">
         <v-img
           :src="item.thumbnail || item.avatar"
           height="125px"
