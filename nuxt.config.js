@@ -55,7 +55,7 @@ module.exports = {
 
   plugins: [
     {
-      src: '~/plugins/sw.js',
+      src: '~/plugins/hook-sw.js',
       ssr: false
     }
   ],
