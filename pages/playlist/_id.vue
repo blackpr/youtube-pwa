@@ -152,17 +152,22 @@ export default {
           await bgf.abort()
         }
 
-        // const selectedVideo = videoUrls[4]
-        // const bgFetch = await reg.backgroundFetch.fetch(
-        //   `${this.playlist.id}-${selectedVideo.id}`,
-        //   [`/api/getInfo/proxy/${selectedVideo.id}`],
-        //   {
-        //     title: selectedVideo.title,
-        //     downloadTotal: selectedVideo.contentLength
-        //   }
-        // )
+        try {
+          const selectedVideo = videoUrls[4]
+          console.log({ selectedVideo })
+          const bgFetch = await reg.backgroundFetch.fetch(
+            `${this.playlist.id}-${selectedVideo.id}`,
+            [`${selectedVideo.url}`],
+            {
+              title: selectedVideo.title,
+              downloadTotal: selectedVideo.contentLength
+            }
+          )
 
-        // this.monitorBgFetch(bgFetch)
+          this.monitorBgFetch(bgFetch)
+        } catch (e) {
+          console.log('fetch failed ', e)
+        }
       }
       console.log(videosResults)
     }
