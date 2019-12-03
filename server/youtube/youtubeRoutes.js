@@ -2,6 +2,7 @@ const router = require('express').Router()
 const ytdl = require('ytdl-core')
 const ytsr = require('ytsr')
 const ytpl = require('ytpl')
+const fetch = require('node-fetch')
 
 router.get('/search', async (req, res) => {
   let searchTerm = req.query.search_query
@@ -19,6 +20,31 @@ router.get('/search', async (req, res) => {
     }
   } else {
     res.status(500).json({ error: 'no search term' })
+  }
+})
+
+router.get('/proxy/:videoId', async (req, res) => {
+  let videoId = req.params.videoId
+  if (videoId) {
+    let isValidId = ytdl.validateID(videoId)
+    if (isValidId) {
+      try {
+        let info = await ytdl.getInfo(videoId)
+        let filteredFormats = ytdl.chooseFormat(info.formats, {
+          quality: 'highest',
+          filter: 'audioandvideo'
+        })
+        fetch(filteredFormats.url).then(t => {
+          t.body.pipe(res)
+        })
+      } catch (error) {
+        res.status(500).json({ error: 'ytdl err' })
+      }
+    } else {
+      res.status(500).json({ error: 'invalid video id' })
+    }
+  } else {
+    res.status(500).json({ error: 'no video id' })
   }
 })
 

@@ -90,10 +90,10 @@ export default {
 
   methods: {
     async monitorBgFetch(bgFetch) {
-      function updateItem(id, state) {
-        console.log({ id, state })
+      const updateItem = (id, state) => {
+        console.log({ id, state, playlist: this.playlist })
       }
-      function doUpdate() {
+      const doUpdate = () => {
         const update = {}
 
         if (bgFetch.result === '') {
@@ -127,6 +127,7 @@ export default {
     },
     async getPlaylistVideoUrls() {
       if (!this.canDownload) return
+
       let videosPromises = this.playlistVideoIds.map(id =>
         this.$axios.$get(`/getInfo/video/${id}`)
       )
@@ -138,26 +139,32 @@ export default {
           url: _get(vr, 'filteredFormats.url'),
           contentLength: _get(vr, 'filteredFormats.contentLength')
         }))
+
         console.log(videoUrls)
         const reg = await navigator.serviceWorker.ready
-        console.log(`${this.playlist.id}-${videoUrls[0].id}`)
-        console.log(videoUrls[0].url)
-        console.log({
-          title: videoUrls[0].title,
-          downloadTotal: videoUrls[0].contentLength
-        })
-        const bgFetch = await reg.backgroundFetch.fetch(
-          `${this.playlist.id}-${videoUrls[0].id}`,
-          [videoUrls[0].url],
-          {
-            title: videoUrls[0].title,
-            downloadTotal: videoUrls[0].contentLength
-          }
-        )
 
-        this.monitorBgFetch(bgFetch)
+        const ids = await reg.backgroundFetch.getIds()
+        console.log(ids)
+        // ids.forEach(async id => {
+        for await (let id of ids) {
+          const bgf = await reg.backgroundFetch.get(id)
+          console.log(bgf)
+          await bgf.abort()
+        }
+
+        // const selectedVideo = videoUrls[4]
+        // const bgFetch = await reg.backgroundFetch.fetch(
+        //   `${this.playlist.id}-${selectedVideo.id}`,
+        //   [`/api/getInfo/proxy/${selectedVideo.id}`],
+        //   {
+        //     title: selectedVideo.title,
+        //     downloadTotal: selectedVideo.contentLength
+        //   }
+        // )
+
+        // this.monitorBgFetch(bgFetch)
       }
-      // console.log(videosResults)
+      console.log(videosResults)
     }
   }
 }
