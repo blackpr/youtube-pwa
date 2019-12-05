@@ -55,14 +55,20 @@ module.exports = {
 
   plugins: [
     {
+      src: '~/plugins/idb-sync.js',
+      mode: 'client',
+      ssr: false
+    },
+    {
       src: '~/plugins/hook-sw.js',
+      mode: 'client',
       ssr: false
     }
   ],
 
   pwa: {
     workbox: {
-      importScripts: ['custom-sw.js'],
+      importScripts: ['idb-min.js', 'custom-sw.js'],
       // todo!!!!: disable this
       // https://pwa.nuxtjs.org/modules/workbox.html#dev
       dev: true

@@ -13,33 +13,17 @@
         {{ playlist.last_updated }}
       </div>
       <v-btn @click="getPlaylistVideoUrls">download</v-btn>
+      <v-btn @click="cancelBgFetches">cancel</v-btn>
     </v-col>
     <v-col v-if="hasPlaylist" cols="12" md="9">
       <v-row v-for="(video, index) in playlist.items" :key="video.id">
         <v-col>
-          <nuxt-link
-            :to="`/video?v=${video.id}&list=${playlist.id}&index=${index + 1}`"
-          >
-            <v-card>
-              <span class="d-flex">
-                <v-img
-                  :src="video.thumbnail"
-                  height="125px"
-                  max-width="250px"
-                  contain
-                />
-                <span>
-                  <v-card-title primary-title>
-                    {{ video.title }}
-                  </v-card-title>
-                  <v-card-subtitle>
-                    <div>{{ video.author && video.author.name }}</div>
-                    <div>{{ video.duration }}</div>
-                  </v-card-subtitle>
-                </span>
-              </span>
-            </v-card>
-          </nuxt-link>
+          <PlaylistItem
+            :index="index"
+            :video="video"
+            :playlist="playlist"
+            :selected-video-for-dl="selectedVideoForDl"
+          />
         </v-col>
       </v-row>
     </v-col>
@@ -48,9 +32,18 @@
 
 <script>
 import _get from 'lodash.get'
+import PlaylistItem from '~/components/PlaylistItem.vue'
 
 export default {
   name: 'PlaylistPage',
+  components: {
+    PlaylistItem
+  },
+
+  data: () => ({
+    videosWithUrls: [],
+    selectedVideoForDl: null
+  }),
 
   computed: {
     hasPlaylist() {
@@ -90,8 +83,12 @@ export default {
 
   methods: {
     async monitorBgFetch(bgFetch) {
-      const updateItem = (id, state) => {
-        console.log({ id, state, playlist: this.playlist })
+      const updateItem = (id, update) => {
+        console.log({ id, update, playlist: this.playlist })
+        if (!this.selectedVideoForDl) return
+        this.selectedVideoForDl = Object.assign({}, this.selectedVideoForDl, {
+          state: update.state
+        })
       }
       const doUpdate = () => {
         const update = {}
@@ -118,11 +115,23 @@ export default {
       bgFetch.addEventListener('progress', doUpdate)
       const channel = new BroadcastChannel(bgFetch.id)
 
-      channel.onmessage = event => {
+      channel.onmessage = async event => {
         if (!event.data.stored) return
         bgFetch.removeEventListener('progress', doUpdate)
         channel.close()
         updateItem(bgFetch.id, { state: 'stored' })
+
+        await this.$offlinedb.put('videos', this.selectedVideoForDl)
+      }
+    },
+    async cancelBgFetches() {
+      const reg = await navigator.serviceWorker.ready
+
+      const ids = await reg.backgroundFetch.getIds()
+      for await (let id of ids) {
+        const bgf = await reg.backgroundFetch.get(id)
+        console.log(bgf)
+        await bgf.abort()
       }
     },
     async getPlaylistVideoUrls() {
@@ -133,43 +142,53 @@ export default {
       )
       let videosResults = await Promise.all(videosPromises)
       if (videosResults && videosResults.length) {
-        let videoUrls = videosResults.map(vr => ({
+        this.videosWithUrls = videosResults.map(vr => ({
+          // I want to store one record in idb for the playlist
+          // the playlist info will have a type: playlist. The rest will be the videos. type: video
+          // db : [{type: playlist, ...}, {type:video, ...}, {type:video, ...}, {type:video, ...}]
+          type: 'video',
           id: _get(vr, 'info.video_id'),
           title: _get(vr, 'info.title'),
-          url: _get(vr, 'filteredFormats.url'),
+          views: _get(vr, 'info.player_response.videoDetails.viewCount'),
+          authorImage: _get(vr, 'info.author.avatar'),
+          authorName: _get(vr, 'info.author.user'),
+          timestamp: _get(vr, 'info.timestamp'),
+          description: _get(vr, 'info.description', ''),
+          playlistId: this.playlist.id,
+          // url: _get(vr, 'filteredFormats.url'),
           contentLength: _get(vr, 'filteredFormats.contentLength')
         }))
 
-        console.log(videoUrls)
-        const reg = await navigator.serviceWorker.ready
+        await this.$offlinedb.put('playlists', {
+          id: this.playlist.id,
+          title: this.playlist.title
+        })
 
-        const ids = await reg.backgroundFetch.getIds()
-        console.log(ids)
-        // ids.forEach(async id => {
-        for await (let id of ids) {
-          const bgf = await reg.backgroundFetch.get(id)
-          console.log(bgf)
-          await bgf.abort()
-        }
-
-        try {
-          const selectedVideo = videoUrls[4]
-          console.log({ selectedVideo })
-          const bgFetch = await reg.backgroundFetch.fetch(
-            `${this.playlist.id}-${selectedVideo.id}`,
-            [`${selectedVideo.url}`],
-            {
-              title: selectedVideo.title,
-              downloadTotal: selectedVideo.contentLength
-            }
-          )
-
-          this.monitorBgFetch(bgFetch)
-        } catch (e) {
-          console.log('fetch failed ', e)
-        }
+        await this.startBgFetch()
       }
       console.log(videosResults)
+    },
+    async startBgFetch() {
+      const reg = await navigator.serviceWorker.ready
+
+      try {
+        if (!this.videosWithUrls) return
+        if (this.videosWithUrls.length === 0) return
+        this.selectedVideoForDl = Object.assign({}, this.videosWithUrls.shift())
+
+        const bgFetch = await reg.backgroundFetch.fetch(
+          `off:::${this.playlist.id}:::${this.selectedVideoForDl.id}`,
+          [`/api/getInfo/proxy/${this.selectedVideoForDl.id}`],
+          {
+            title: this.selectedVideoForDl.title,
+            downloadTotal: this.selectedVideoForDl.contentLength
+          }
+        )
+
+        this.monitorBgFetch(bgFetch)
+      } catch (e) {
+        console.log('fetch failed ', e)
+      }
     }
   }
 }
