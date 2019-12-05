@@ -12,7 +12,12 @@
       <div class="subheading">
         {{ playlist.last_updated }}
       </div>
-      <v-btn @click="getPlaylistVideoUrls">download</v-btn>
+      <v-btn
+        :loading="loadingVideos || selectedVideoForDl.state === 'fetching'"
+        @click="getPlaylistVideoUrls"
+      >
+        download
+      </v-btn>
       <v-btn @click="cancelBgFetches">cancel</v-btn>
     </v-col>
     <v-col v-if="hasPlaylist" cols="12" md="9">
@@ -41,8 +46,9 @@ export default {
   },
 
   data: () => ({
+    loadingVideos: false,
     videosWithUrls: [],
-    selectedVideoForDl: null
+    selectedVideoForDl: {}
   }),
 
   computed: {
@@ -117,11 +123,13 @@ export default {
 
       channel.onmessage = async event => {
         if (!event.data.stored) return
+        // yay! we have the video
         bgFetch.removeEventListener('progress', doUpdate)
         channel.close()
         updateItem(bgFetch.id, { state: 'stored' })
 
         await this.$offlinedb.put('videos', this.selectedVideoForDl)
+        this.startBgFetch()
       }
     },
     async cancelBgFetches() {
@@ -140,7 +148,9 @@ export default {
       let videosPromises = this.playlistVideoIds.map(id =>
         this.$axios.$get(`/getInfo/video/${id}`)
       )
+      this.loadingVideos = true
       let videosResults = await Promise.all(videosPromises)
+      this.loadingVideos = false
       if (videosResults && videosResults.length) {
         this.videosWithUrls = videosResults.map(vr => ({
           // I want to store one record in idb for the playlist
