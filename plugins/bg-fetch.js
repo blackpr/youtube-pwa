@@ -2,7 +2,7 @@ import Vue from 'vue'
 import _get from 'lodash.get'
 import setupIdb from '~/utils/offlineDB.js'
 
-export default async ({ $axios }, inject) => {
+export default async ({ $axios, store }, inject) => {
   // use lazy import in order to work with window and axios
   // const axios = window.$nuxt.$axios
 
@@ -59,6 +59,7 @@ export default async ({ $axios }, inject) => {
       updateItem(bgFetch.id, { state: 'stored' })
 
       await offlinedb.put('videos', state.selectedVideoForDl)
+      store.commit('offline/addVideo', state.selectedVideoForDl)
       startBgFetch()
     }
   }
@@ -127,10 +128,12 @@ export default async ({ $axios }, inject) => {
       }))
 
       offlinedb = await setupIdb()
-      await offlinedb.put('playlists', {
+      const playlistInfo = {
         id: state.playlist.id,
         title: state.playlist.title
-      })
+      }
+      await offlinedb.put('playlists', playlistInfo)
+      store.commit('offline/addPlaylist', state.playlistInfo)
 
       await startBgFetch()
     }
@@ -146,7 +149,7 @@ export default async ({ $axios }, inject) => {
       state.selectedVideoForDl = Object.assign({}, state.videosWithUrls.shift())
 
       const bgFetch = await reg.backgroundFetch.fetch(
-        `off:::${state.playlist.id}:::${state.selectedVideoForDl.id}`,
+        `off:::${state.selectedVideoForDl.id}`,
         [`/api/getInfo/proxy/${state.selectedVideoForDl.id}`],
         {
           title: state.selectedVideoForDl.title,

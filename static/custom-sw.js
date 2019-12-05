@@ -1,4 +1,7 @@
 console.log('*****************Custom service worker!')
+// eslint-disable-next-line no-unused-vars
+addEventListener('fetch', async event => {})
+
 addEventListener('backgroundfetchsuccess', event => {
   const bgFetch = event.registration
 
