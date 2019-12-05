@@ -14,9 +14,9 @@
       </div>
     </v-col>
     <v-col v-if="hasPlaylist" cols="12" md="9">
-      <v-row v-for="(video, index) in playlist.items" :key="video.id">
+      <v-row v-for="video in playlist.items" :key="video.id">
         <v-col>
-          <PlaylistItem :index="index" :video="video" :playlist="playlist" />
+          <OfflineListItem :video="video" :playlist="playlist" />
         </v-col>
       </v-row>
     </v-col>
@@ -25,13 +25,13 @@
 
 <script>
 import _get from 'lodash.get'
-import PlaylistItem from '~/components/PlaylistItem.vue'
+import OfflineListItem from '~/components/OfflineListItem.vue'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'OfflineListPage',
   components: {
-    PlaylistItem
+    OfflineListItem
   },
 
   computed: {
