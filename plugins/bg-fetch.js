@@ -100,6 +100,13 @@ export default async ({ $axios }, inject) => {
     await getVideosResults()
   }
 
+  function getThumbnail(video) {
+    const playlistItem = _get(state.playlist, 'items', []).find(
+      pi => pi.id === _get(video, 'info.video_id')
+    )
+    return _get(playlistItem, 'thumbnail', '')
+  }
+
   async function setupBgFetch(playlist) {
     await setupWorld(playlist)
     if (!state.canDownload) return
@@ -113,6 +120,7 @@ export default async ({ $axios }, inject) => {
         authorName: _get(vr, 'info.author.user'),
         timestamp: _get(vr, 'info.timestamp'),
         description: _get(vr, 'info.description', ''),
+        thumbnail: getThumbnail(vr),
         playlistId: state.playlist.id,
         // url: _get(vr, 'filteredFormats.url'),
         contentLength: _get(vr, 'filteredFormats.contentLength')
