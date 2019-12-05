@@ -15,6 +15,9 @@ export const mutations = {
 
 export const getters = {
   playlistsMap(state) {
+    if (!state.playlists) return {}
+    if (!state.playlists.length) return {}
+
     return state.playlists.reduce((acc, curr) => {
       acc[curr.id] = {
         ...curr,

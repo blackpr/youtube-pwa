@@ -17,9 +17,10 @@
           $offlineState.loadingVideos ||
             $offlineState.selectedVideoForDl.state === 'fetching'
         "
+        :disabled="hasBeenDownloaded"
         @click="startFetchingVideos"
       >
-        download
+        {{ hasBeenDownloaded ? 'downloaded' : 'download' }}
       </v-btn>
       <!-- <v-btn @click="cancelPendingBgFetches">cancel</v-btn> -->
     </v-col>
@@ -41,6 +42,7 @@
 <script>
 import _get from 'lodash.get'
 import PlaylistItem from '~/components/PlaylistItem.vue'
+import { mapGetters } from 'vuex'
 // import { setupBgFetch, state } from '~/utils/bgFetch'
 // const bgfetch = () => import('~/utils/bgFetch')
 // let bgf = {}
@@ -55,16 +57,14 @@ export default {
     loadingVideos: false,
     videosWithUrls: [],
     selectedVideoForDl: {}
-    // offlineState: {
-    //   selectedVideoForDl: {},
-    //   canDownload: false,
-    //   playlist: [],
-    //   videosWithUrls: [],
-    //   loadingVideos: false
-    // }
   }),
 
   computed: {
+    ...mapGetters('offline', ['playlistsMap']),
+    hasBeenDownloaded() {
+      if (this.playlistsMap[this.playlist.id]) return true
+      return false
+    },
     offlineState() {
       return this.$offlineState
     },

@@ -133,7 +133,7 @@ export default async ({ $axios, store }, inject) => {
         title: state.playlist.title
       }
       await offlinedb.put('playlists', playlistInfo)
-      store.commit('offline/addPlaylist', state.playlistInfo)
+      store.commit('offline/addPlaylist', playlistInfo)
 
       await startBgFetch()
     }
