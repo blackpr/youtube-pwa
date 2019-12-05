@@ -60,6 +60,11 @@ module.exports = {
       ssr: false
     },
     {
+      src: '~/plugins/bg-fetch.js',
+      mode: 'client',
+      ssr: false
+    },
+    {
       src: '~/plugins/hook-sw.js',
       mode: 'client',
       ssr: false
