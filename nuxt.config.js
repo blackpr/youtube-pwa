@@ -78,6 +78,9 @@ module.exports = {
 
   pwa: {
     workbox: {
+      // todo!!!!: disable this
+      // https://pwa.nuxtjs.org/modules/workbox.html#dev
+      dev: false,
       importScripts: ['idb-min.js', 'custom-sw.js'],
       cachingExtensions: '~/plugins/workbox-videos.js',
       runtimeCaching: [
@@ -91,13 +94,14 @@ module.exports = {
             }
           }
         }
-      ],
-      // todo!!!!: disable this
-      // https://pwa.nuxtjs.org/modules/workbox.html#dev
-      dev: true
+      ]
     },
     icon: {
       iconSrc: '~/static/icon.png'
+    },
+    manifest: {
+      name: 'Youtube-PWA',
+      lang: 'YTPWA'
     }
   },
   /*

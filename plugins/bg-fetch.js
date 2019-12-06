@@ -163,7 +163,6 @@ export default async ({ $axios, store }, inject) => {
     await db.delete('playlists', playlist.id)
     const videos = _get(playlist, 'items', [])
     if (!videos) return
-    console.log({ videos })
     for await (let video of videos) {
       await db.delete('videos', video.id)
       await caches.delete(`off:::${video.id}`)
