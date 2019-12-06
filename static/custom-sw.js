@@ -1,6 +1,11 @@
 console.log('*****************Custom service worker!')
 // eslint-disable-next-line no-unused-vars
-addEventListener('fetch', async event => {})
+// self.addEventListener('fetch', async event => {
+//   const url = new URL(event.request.url)
+//   console.log('customswurl', url)
+//   console.log('customswpathname', url.pathname)
+//   console.log('customswrequest', event.request)
+// })
 
 addEventListener('backgroundfetchsuccess', event => {
   const bgFetch = event.registration

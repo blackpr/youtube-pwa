@@ -12,6 +12,7 @@
       <div class="subheading">
         {{ playlist.last_updated }}
       </div>
+      <v-btn @click="deletePlaylist">delete</v-btn>
     </v-col>
     <v-col v-if="hasPlaylist" cols="12" md="9">
       <v-row v-for="video in playlist.items" :key="video.id">
@@ -56,6 +57,12 @@ export default {
         return this.playlist.items.length
       }
       return null
+    }
+  },
+  methods: {
+    async deletePlaylist() {
+      await this.$deletePlaylist(this.playlist)
+      this.$router.replace('/')
     }
   }
 }

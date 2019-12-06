@@ -20,7 +20,6 @@ export default async ({ $axios, store }, inject) => {
 
   async function monitorBgFetch(bgFetch) {
     const updateItem = (id, update) => {
-      console.log({ id, update, playlist: state.playlist })
       if (!state.selectedVideoForDl) return
       state.selectedVideoForDl = Object.assign({}, state.selectedVideoForDl, {
         state: update.state
@@ -163,7 +162,21 @@ export default async ({ $axios, store }, inject) => {
     }
   }
 
+  async function deletePlaylist(playlist) {
+    const db = await setupIdb()
+    await db.delete('playlists', playlist.id)
+    const videos = _get(playlist, 'items', [])
+    if (!videos) return
+    console.log({ videos })
+    for await (let video of videos) {
+      await db.delete('videos', video.id)
+      await caches.delete(`off:::${video.id}`)
+    }
+    store.commit('offline/deletePlaylist', playlist.id)
+  }
+
   inject('offlineState', state)
   inject('cancelPendingBgFetches', cancelPendingBgFetches)
   inject('setupBgFetch', setupBgFetch)
+  inject('deletePlaylist', deletePlaylist)
 }

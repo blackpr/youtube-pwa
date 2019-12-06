@@ -36,7 +36,7 @@
             <v-list-item
               v-for="(child, i) in item.children"
               :key="i"
-              link
+              nuxt
               :to="child.link"
             >
               <v-list-item-action v-if="child.icon">
@@ -49,7 +49,7 @@
               </v-list-item-content>
             </v-list-item>
           </v-list-group>
-          <v-list-item v-else :key="item.text" link :to="item.link">
+          <v-list-item v-else :key="item.text" nuxt :to="item.link">
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-action>
@@ -61,6 +61,12 @@
           </v-list-item>
         </template>
       </v-list>
+
+      <template v-slot:append>
+        <div class="pa-2">
+          <v-btn block @click="refresh">Refresh</v-btn>
+        </div>
+      </template>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
@@ -127,6 +133,12 @@ export default {
       } else {
         return [...this.items]
       }
+    }
+  },
+
+  methods: {
+    refresh() {
+      location.reload(true)
     }
   }
 }

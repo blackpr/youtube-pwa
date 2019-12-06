@@ -35,6 +35,9 @@ router.get('/proxy/:videoId', async (req, res) => {
           filter: 'audioandvideo'
         })
         fetch(filteredFormats.url).then(t => {
+          res.set('Content-Type', 'video/mp4')
+          res.set('Content-length', filteredFormats.contentLength)
+          res.set('Accept-Ranges', 'bytes')
           t.body.pipe(res)
         })
       } catch (error) {

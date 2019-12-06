@@ -79,9 +79,25 @@ module.exports = {
   pwa: {
     workbox: {
       importScripts: ['idb-min.js', 'custom-sw.js'],
+      cachingExtensions: '~/plugins/workbox-videos.js',
+      runtimeCaching: [
+        {
+          urlPattern: 'https://i.ytimg.com.*',
+          strategyOptions: {
+            cacheName: 'youtube-images',
+            cacheExpiration: {
+              maxEntries: 500,
+              maxAgeSeconds: 30 * 24 * 60 * 60
+            }
+          }
+        }
+      ],
       // todo!!!!: disable this
       // https://pwa.nuxtjs.org/modules/workbox.html#dev
       dev: true
+    },
+    icon: {
+      iconSrc: '~/static/icon.png'
     }
   },
   /*

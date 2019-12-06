@@ -10,6 +10,13 @@ export const mutations = {
 
   addVideo(state, payload) {
     state.videos.push(payload)
+  },
+
+  deletePlaylist(state, playlistId) {
+    state.playlists = state.playlists.filter(
+      playlist => playlist.id !== playlistId
+    )
+    state.videos = state.videos.filter(video => video.playlistId !== playlistId)
   }
 }
 
