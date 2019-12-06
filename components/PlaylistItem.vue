@@ -3,7 +3,7 @@
     :to="`/video?v=${video.id}&list=${playlist.id}&index=${index + 1}`"
   >
     <v-card :loading="isDownloading">
-      <span class="d-flex">
+      <span class="d-md-flex">
         <v-img
           :src="video.thumbnail"
           height="125px"
@@ -11,7 +11,7 @@
           contain
         />
         <span>
-          <v-card-title primary-title>
+          <v-card-title>
             {{ video.title }}
           </v-card-title>
           <v-card-subtitle>
