@@ -48,8 +48,58 @@ module.exports = {
     // Doc: https://github.com/nuxt-community/axios-module#usage
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    // Doc: https://pwa.nuxtjs.org/setup.html
+    '@nuxtjs/pwa'
   ],
+
+  plugins: [
+    {
+      src: '~/plugins/idb-sync.js',
+      mode: 'client',
+      ssr: false
+    },
+    {
+      src: '~/plugins/bg-fetch.js',
+      mode: 'client',
+      ssr: false
+    },
+    {
+      src: '~/plugins/sync-idb-store.js',
+      mode: 'client',
+      ssr: false
+    },
+    {
+      src: '~/plugins/hook-sw.js',
+      mode: 'client',
+      ssr: false
+    }
+  ],
+
+  pwa: {
+    workbox: {
+      importScripts: ['idb-min.js', 'custom-sw.js'],
+      cachingExtensions: '~/plugins/workbox-videos.js',
+      runtimeCaching: [
+        {
+          urlPattern: 'https://i.ytimg.com.*',
+          strategyOptions: {
+            cacheName: 'youtube-images',
+            cacheExpiration: {
+              maxEntries: 500,
+              maxAgeSeconds: 30 * 24 * 60 * 60
+            }
+          }
+        }
+      ],
+      // todo!!!!: disable this
+      // https://pwa.nuxtjs.org/modules/workbox.html#dev
+      dev: true
+    },
+    icon: {
+      iconSrc: '~/static/icon.png'
+    }
+  },
   /*
    ** Axios module configuration
    */

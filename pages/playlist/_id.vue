@@ -12,33 +12,27 @@
       <div class="subheading">
         {{ playlist.last_updated }}
       </div>
+      <v-btn
+        :loading="
+          $offlineState.loadingVideos ||
+            $offlineState.selectedVideoForDl.state === 'fetching'
+        "
+        :disabled="hasBeenDownloaded"
+        @click="startFetchingVideos"
+      >
+        {{ hasBeenDownloaded ? 'downloaded' : 'download' }}
+      </v-btn>
+      <!-- <v-btn @click="cancelPendingBgFetches">cancel</v-btn> -->
     </v-col>
     <v-col v-if="hasPlaylist" cols="12" md="9">
       <v-row v-for="(video, index) in playlist.items" :key="video.id">
         <v-col>
-          <nuxt-link
-            :to="`/video?v=${video.id}&list=${playlist.id}&index=${index + 1}`"
-          >
-            <v-card>
-              <span class="d-md-flex">
-                <v-img
-                  :src="video.thumbnail"
-                  height="125px"
-                  max-width="250px"
-                  contain
-                />
-                <span>
-                  <v-card-title primary-title>
-                    {{ video.title }}
-                  </v-card-title>
-                  <v-card-subtitle>
-                    <div>{{ video.author && video.author.name }}</div>
-                    <div>{{ video.duration }}</div>
-                  </v-card-subtitle>
-                </span>
-              </span>
-            </v-card>
-          </nuxt-link>
+          <PlaylistItem
+            :index="index"
+            :video="video"
+            :playlist="playlist"
+            :selected-video-for-dl="$offlineState.selectedVideoForDl"
+          />
         </v-col>
       </v-row>
     </v-col>
@@ -47,11 +41,33 @@
 
 <script>
 import _get from 'lodash.get'
+import PlaylistItem from '~/components/PlaylistItem.vue'
+import { mapGetters } from 'vuex'
+// import { setupBgFetch, state } from '~/utils/bgFetch'
+// const bgfetch = () => import('~/utils/bgFetch')
+// let bgf = {}
 
 export default {
   name: 'PlaylistPage',
+  components: {
+    PlaylistItem
+  },
+
+  data: () => ({
+    loadingVideos: false,
+    videosWithUrls: [],
+    selectedVideoForDl: {}
+  }),
 
   computed: {
+    ...mapGetters('offline', ['playlistsMap']),
+    hasBeenDownloaded() {
+      if (this.playlistsMap[this.playlist.id]) return true
+      return false
+    },
+    offlineState() {
+      return this.$offlineState
+    },
     hasPlaylist() {
       return (
         this.playlist && this.playlist.items && this.playlist.items.length > 0
@@ -65,6 +81,9 @@ export default {
         return this.playlist.items.length
       }
       return null
+    },
+    canDownload() {
+      return this.$offlineState.canDownload
     }
   },
 
@@ -75,6 +94,14 @@ export default {
       return { playlist }
     } catch (error) {
       console.log(error)
+    }
+  },
+
+  methods: {
+    async startFetchingVideos() {
+      // bgf = await bgfetch()
+      // this.offlineState = bgf.state
+      await this.$setupBgFetch(this.playlist)
     }
   }
 }
