@@ -8,9 +8,14 @@
           max-width="250px"
           contain
         />
-        <span>
+        <span style="width: 100%">
           <v-card-title primary-title>
             {{ video.title }}
+            <v-spacer />
+
+            <v-btn icon>
+              <v-icon @click.prevent.stop="deleteFile">mdi-delete</v-icon>
+            </v-btn>
           </v-card-title>
           <v-card-subtitle>
             <div>{{ video.author && video.author.name }}</div>
@@ -42,6 +47,12 @@ export default {
     isDownloading() {
       if (!this.downloadState) return false
       return ['fetching'].includes(this.selectedVideoForDl.state)
+    }
+  },
+
+  methods: {
+    async deleteFile() {
+      await this.$deleteVideo(this.video.id)
     }
   }
 }
