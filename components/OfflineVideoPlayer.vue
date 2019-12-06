@@ -42,7 +42,7 @@ export default {
   watch: {
     video: {
       handler() {
-        let src = `/api/getInfo/proxy/${this.video.id}`
+        let src = this.video.url
         this.videoPlayer.src = src
         this.videoPlayer.play().catch(err => console.log(err))
       }
@@ -51,7 +51,7 @@ export default {
   mounted() {
     this.videoPlayer = this.$refs.player
     if (this.video && this.video.id) {
-      let src = `/api/getInfo/proxy/${this.video.id}`
+      let src = this.video.url
       this.videoPlayer.src = src
       // this.videoPlayer.play().catch(err => console.log(err))
       this.videoPlayer.addEventListener('ended', this.goToNextVideo)

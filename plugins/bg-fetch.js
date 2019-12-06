@@ -119,7 +119,10 @@ export default async ({ $axios, store }, inject) => {
         description: _get(vr, 'info.description', ''),
         thumbnail: getThumbnail(vr),
         playlistId: state.playlist.id,
-        // url: _get(vr, 'filteredFormats.url'),
+        url: `https://cors-anywhere.herokuapp.com/${_get(
+          vr,
+          'filteredFormats.url'
+        )}`,
         contentLength: _get(vr, 'filteredFormats.contentLength')
       }))
 
@@ -145,7 +148,7 @@ export default async ({ $axios, store }, inject) => {
 
       const bgFetch = await reg.backgroundFetch.fetch(
         `off:::${state.selectedVideoForDl.id}`,
-        [`/api/getInfo/proxy/${state.selectedVideoForDl.id}`],
+        [state.selectedVideoForDl.url],
         {
           title: state.selectedVideoForDl.title,
           downloadTotal: state.selectedVideoForDl.contentLength
