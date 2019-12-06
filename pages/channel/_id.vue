@@ -18,7 +18,7 @@
         <v-col>
           <nuxt-link :to="getRoute(video)">
             <v-card>
-              <span class="d-flex">
+              <span class="d-md-flex">
                 <v-img
                   :src="video.thumbnail"
                   height="125px"
