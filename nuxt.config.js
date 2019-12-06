@@ -100,8 +100,7 @@ module.exports = {
       iconSrc: '~/static/icon.png'
     },
     manifest: {
-      name: 'Youtube-PWA',
-      lang: 'YTPWA'
+      name: 'Youtube-PWA'
     }
   },
   /*
