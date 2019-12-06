@@ -3,9 +3,6 @@ import _get from 'lodash.get'
 import setupIdb from '~/utils/offlineDB.js'
 
 export default async ({ $axios, store }, inject) => {
-  // use lazy import in order to work with window and axios
-  // const axios = window.$nuxt.$axios
-
   const state = Vue.observable({
     selectedVideoForDl: {},
     canDownload: false,
@@ -136,7 +133,6 @@ export default async ({ $axios, store }, inject) => {
 
       await startBgFetch()
     }
-    console.log(videosResults)
   }
 
   async function startBgFetch() {

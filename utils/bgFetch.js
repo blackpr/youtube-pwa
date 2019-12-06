@@ -19,7 +19,6 @@ let playlistVideoIds = []
 
 async function monitorBgFetch(bgFetch) {
   const updateItem = (id, update) => {
-    console.log({ id, update, playlist: state.playlist })
     if (!state.selectedVideoForDl) return
     state.selectedVideoForDl = Object.assign({}, state.selectedVideoForDl, {
       state: update.state
@@ -125,7 +124,6 @@ export async function setupBgFetch(playlist) {
 
     await startBgFetch()
   }
-  console.log(videosResults)
 }
 
 async function startBgFetch() {

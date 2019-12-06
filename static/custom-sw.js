@@ -1,5 +1,4 @@
-console.log('*****************Custom service worker!')
-// eslint-disable-next-line no-unused-vars
+console.log('Custom service worker!')
 // self.addEventListener('fetch', async event => {
 //   const url = new URL(event.request.url)
 //   console.log('customswurl', url)
