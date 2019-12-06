@@ -173,8 +173,16 @@ export default async ({ $axios, store }, inject) => {
     store.commit('offline/deletePlaylist', playlist.id)
   }
 
+  async function deleteVideo(videoId) {
+    const db = await setupIdb()
+    await db.delete('videos', videoId)
+    caches.delete(`off:::${videoId}`)
+    store.commit('offline/deleteVideo', videoId)
+  }
+
   inject('offlineState', state)
   inject('cancelPendingBgFetches', cancelPendingBgFetches)
   inject('setupBgFetch', setupBgFetch)
   inject('deletePlaylist', deletePlaylist)
+  inject('deleteVideo', deleteVideo)
 }
