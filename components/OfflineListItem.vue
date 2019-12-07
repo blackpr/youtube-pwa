@@ -1,7 +1,7 @@
 <template>
   <nuxt-link :to="`/offline/video?v=${video.id}&list=${playlist.id}`">
     <v-card :loading="isDownloading">
-      <span class="d-flex">
+      <span class="d-md-flex">
         <v-img
           :src="video.thumbnail"
           height="125px"
