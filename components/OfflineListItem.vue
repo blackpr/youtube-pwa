@@ -1,5 +1,8 @@
 <template>
-  <nuxt-link :to="`/offline/video?v=${video.id}&list=${playlist.id}`">
+  <nuxt-link
+    class="no-decoration"
+    :to="`/offline/video?v=${video.id}&list=${playlist.id}`"
+  >
     <v-card :loading="isDownloading">
       <span class="d-md-flex">
         <v-img
@@ -10,7 +13,9 @@
         />
         <span style="width: 100%">
           <v-card-title primary-title>
-            {{ video.title }}
+            <span class="default-decoration">
+              {{ video.title }}
+            </span>
             <v-spacer />
 
             <v-btn icon>
@@ -58,4 +63,12 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.no-decoration {
+  text-decoration: none;
+}
+.default-decoration {
+  text-decoration: underline;
+  text-decoration-color: #ff4081 !important;
+}
+</style>

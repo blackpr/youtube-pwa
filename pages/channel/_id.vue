@@ -16,7 +16,7 @@
     <v-col v-if="hasPlaylist" cols="12" md="9">
       <v-row v-for="video in playlist.items" :key="video.id">
         <v-col>
-          <nuxt-link :to="getRoute(video)">
+          <nuxt-link class="no-decoration" :to="getRoute(video)">
             <v-card>
               <span class="d-md-flex">
                 <v-img
@@ -27,7 +27,7 @@
                 />
                 <span>
                   <v-card-title primary-title>
-                    {{ video.title }}
+                    <span class="default-decoration">{{ video.title }}</span>
                   </v-card-title>
                   <v-card-subtitle>
                     <div>{{ video.author && video.author.name }}</div>
@@ -47,7 +47,7 @@
 import _get from 'lodash.get'
 
 export default {
-  name: 'PlaylistPage',
+  name: 'ChannelPage',
   computed: {
     hasPlaylist() {
       return (
@@ -88,4 +88,12 @@ export default {
 }
 </script>
 
-<style scopped></style>
+<style>
+.no-decoration {
+  text-decoration: none;
+}
+.default-decoration {
+  text-decoration: underline;
+  text-decoration-color: #ff4081 !important;
+}
+</style>
