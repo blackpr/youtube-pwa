@@ -80,7 +80,7 @@ module.exports = {
     workbox: {
       // todo!!!!: disable this
       // https://pwa.nuxtjs.org/modules/workbox.html#dev
-      dev: true,
+      dev: false,
       importScripts: ['idb-min.js', 'custom-sw.js'],
       cachingExtensions: '~/plugins/workbox-videos.js',
       runtimeCaching: [
