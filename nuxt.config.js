@@ -90,7 +90,7 @@ module.exports = {
             cacheName: 'youtube-images',
             cacheExpiration: {
               maxEntries: 500,
-              maxAgeSeconds: 30 * 24 * 60 * 60
+              maxAgeSeconds: 6 * 30 * 24 * 60 * 60
             }
           }
         }
