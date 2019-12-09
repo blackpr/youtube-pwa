@@ -90,6 +90,12 @@
         >
       </span>
     </v-footer>
+    <v-snackbar v-model="snackbar" :timeout="0">
+      {{ snackBarText }}
+      <v-btn color="pink" text @click="refreshApp">
+        Refresh
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
@@ -104,7 +110,9 @@ export default {
       fixed: false,
       items: [{ icon: 'search', text: 'Search', link: '/' }],
       miniVariant: false,
-      title: 'Youtube pwa client'
+      title: 'Youtube pwa client',
+      snackbar: false,
+      snackBarText: null
     }
   },
 
@@ -136,7 +144,24 @@ export default {
     }
   },
 
+  async mounted() {
+    const workbox = await window.$workbox
+    if (workbox) {
+      workbox.addEventListener('installed', event => {
+        if (event.isUpdate) {
+          this.snackBarText = 'New version is available!. Click to reload'
+          this.snackbar = true
+        }
+      })
+    }
+  },
+
   methods: {
+    refreshApp() {
+      this.snackbar = false
+      this.snackBarText = null
+      this.refresh()
+    },
     refresh() {
       location.reload(true)
     }
