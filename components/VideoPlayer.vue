@@ -29,6 +29,20 @@ export default {
       skipTime: 10
     }
   },
+  computed: {
+    thumbnails() {
+      let tumbs = _get(
+        this.video,
+        'info.player_response.videoDetails.thumbnail.thumbnails',
+        []
+      )
+      return tumbs.map(thumb => ({
+        src: thumb.url,
+        sizes: `${thumb.width}x${thumb.height}`,
+        type: 'image/jpg'
+      }))
+    }
+  },
   watch: {
     video: {
       handler() {
@@ -87,7 +101,8 @@ export default {
       if ('mediaSession' in navigator) {
         let mediaObject = {
           title: _get(this.video, 'info.title'),
-          artist: _get(this.video, 'info.author.name')
+          artist: _get(this.video, 'info.author.name'),
+          artwork: this.thumbnails
         }
         // eslint-disable-next-line no-undef
         navigator.mediaSession.metadata = new MediaMetadata(mediaObject)

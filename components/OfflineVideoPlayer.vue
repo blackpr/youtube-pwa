@@ -37,6 +37,18 @@ export default {
       if (!this.playlist.items) return 0
       if (!this.playlist.items.length) return 0
       return this.playlist.items.findIndex(v => v.id === this.video.id) + 1
+    },
+    thumbnails() {
+      let tumbs = _get(this.video, 'thumbnails', [])
+      return tumbs.map(thumb => ({
+        src: thumb.url,
+        sizes: `${thumb.width}x${thumb.height}`,
+        type: 'image/jpg'
+      }))
+    },
+    artwork() {
+      if (this.thumbnails && this.thumbnails.length) return this.thumbnails
+      return [{ src: _get(this.video, 'thumbnail', '') }]
     }
   },
   watch: {
@@ -95,7 +107,8 @@ export default {
       if ('mediaSession' in navigator) {
         let mediaObject = {
           title: _get(this.video, 'title'),
-          artist: _get(this.video, 'authorName')
+          artist: _get(this.video, 'authorName'),
+          artwork: this.artwork
         }
         // eslint-disable-next-line no-undef
         navigator.mediaSession.metadata = new MediaMetadata(mediaObject)

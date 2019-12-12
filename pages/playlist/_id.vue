@@ -22,6 +22,7 @@
       >
         {{ hasBeenDownloaded ? 'downloaded' : 'download' }}
       </v-btn>
+      <v-btn @click="cancelPendingFetches">cancel pending downloads</v-btn>
       <!-- <v-btn @click="cancelPendingBgFetches">cancel</v-btn> -->
     </v-col>
     <v-col v-if="hasPlaylist" cols="12" md="9">
@@ -102,6 +103,9 @@ export default {
       // bgf = await bgfetch()
       // this.offlineState = bgf.state
       await this.$setupBgFetch(this.playlist)
+    },
+    async cancelPendingFetches() {
+      return this.$cancelPendingBgFetches()
     }
   }
 }
