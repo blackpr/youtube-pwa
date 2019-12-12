@@ -22,8 +22,7 @@
       >
         {{ hasBeenDownloaded ? 'downloaded' : 'download' }}
       </v-btn>
-      <v-btn @click="cancelPendingFetches">cancel pending downloads</v-btn>
-      <!-- <v-btn @click="cancelPendingBgFetches">cancel</v-btn> -->
+      <!-- <v-btn @click="cancelPendingFetches">cancel pending downloads</v-btn> -->
     </v-col>
     <v-col v-if="hasPlaylist" cols="12" md="9">
       <v-row v-for="(video, index) in playlist.items" :key="video.id">
