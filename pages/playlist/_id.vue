@@ -103,9 +103,6 @@ export default {
       // bgf = await bgfetch()
       // this.offlineState = bgf.state
       await this.$setupBgFetch(this.playlist)
-    },
-    async cancelPendingFetches() {
-      return this.$cancelPendingBgFetches()
     }
   }
 }

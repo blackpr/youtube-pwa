@@ -64,6 +64,9 @@
 
       <template v-slot:append>
         <div class="pa-2">
+          <v-btn @click="cancelPendingFetches">cancel pending downloads</v-btn>
+        </div>
+        <div class="pa-2">
           <v-btn block @click="refresh">Refresh</v-btn>
         </div>
       </template>
@@ -164,6 +167,9 @@ export default {
     },
     refresh() {
       location.reload(true)
+    },
+    async cancelPendingFetches() {
+      return this.$cancelPendingBgFetches()
     }
   }
 }
