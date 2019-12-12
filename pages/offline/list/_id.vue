@@ -14,7 +14,7 @@
       </div>
       <v-btn @click="deletePlaylist">delete</v-btn>
     </v-col>
-    <v-col v-if="hasPlaylist" cols="12" md="9">
+    <v-col v-if="hasPlaylistItems" cols="12" md="9">
       <v-row v-for="video in playlist.items" :key="video.id">
         <v-col>
           <OfflineListItem :video="video" :playlist="playlist" />
@@ -45,6 +45,9 @@ export default {
       return { id: '', items: [] }
     },
     hasPlaylist() {
+      return !!(this.playlist && this.playlist.id)
+    },
+    hasPlaylistItems() {
       return (
         this.playlist && this.playlist.items && this.playlist.items.length > 0
       )
