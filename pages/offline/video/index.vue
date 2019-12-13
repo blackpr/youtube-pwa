@@ -1,6 +1,10 @@
 <template>
   <v-container column>
-    <OfflineVideoPlayer v-if="video" :video="video" :playlist="playlist" />
+    <OfflineVideoPlayer
+      v-if="video"
+      :video="video"
+      :playlist="playlistComputed"
+    />
 
     <!-- todo: extract to list component and style -->
     <!-- description -->
@@ -38,7 +42,12 @@
     <!-- todo: extract to list component and style -->
     <!-- playlist -->
     <v-row v-if="hasPlaylist" align="stretch">
-      <v-col v-for="vid in playlist.items" :key="vid.id" cols="12" md="4">
+      <v-col
+        v-for="vid in playlistComputed.items"
+        :key="vid.id"
+        cols="12"
+        md="4"
+      >
         <nuxt-link :to="`/offline/video?v=${vid.id}&list=${playlistId}`">
           <v-card class="mx-auto" height="100%">
             <v-img :src="vid.thumbnail" height="125px"> </v-img>
@@ -60,6 +69,9 @@
 import OfflineVideoPlayer from '~/components/OfflineVideoPlayer'
 import _get from 'lodash.get'
 import { mapGetters } from 'vuex'
+import shuffle from 'lodash/shuffle'
+import cloneDeep from 'lodash/cloneDeep'
+import pullAt from 'lodash/pullAt'
 
 export default {
   name: 'OfflineVideoIdPage',
@@ -70,7 +82,9 @@ export default {
     return {
       showMore: null,
       videoId: null,
-      playlistId: null
+      playlistId: null,
+      isShuffle: false,
+      playlistComputed: { id: '', items: [] }
     }
   },
   computed: {
@@ -103,6 +117,21 @@ export default {
         this.playlist && this.playlist.items && this.playlist.items.length > 0
       )
     },
+    // shufflePlayList() {
+    //   if (!this.hasPlaylist) return this.playlist
+    //   const playlistCopy = cloneDeep(this.playlist)
+    //   const selecteVideoIndex = playlistCopy.items.findIndex(
+    //     video => video.id === this.videoId
+    //   )
+    //   pullAt(playlistCopy.items, [selecteVideoIndex])
+    //   playlistCopy.items = shuffle(playlistCopy.items)
+    //   playlistCopy.items = [this.video, ...playlistCopy.items]
+    //   return playlistCopy
+    // },
+    // playlistComputed() {
+    //   if (!this.hasPlaylist) return this.playlist
+    //   return this.isShuffle ? this.shufflePlayList : this.playlist
+    // },
     description() {
       return _get(this.video, 'description')
     },
@@ -132,6 +161,24 @@ export default {
     $route: {
       handler: 'fetchVideoFromQuery',
       immediate: true
+    }
+  },
+  mounted() {
+    console.log('mounted')
+    this.isShuffle = this.$route.query.shuffle || false
+
+    if (this.hasPlaylist) {
+      // shuffle playlist
+      const playlistCopy = cloneDeep(this.playlist)
+      const selecteVideoIndex = playlistCopy.items.findIndex(
+        video => video.id === this.videoId
+      )
+      pullAt(playlistCopy.items, [selecteVideoIndex])
+      playlistCopy.items = shuffle(playlistCopy.items)
+      playlistCopy.items = [this.video, ...playlistCopy.items]
+
+      // set playlist
+      this.playlistComputed = this.isShuffle ? playlistCopy : this.playlist
     }
   },
   methods: {

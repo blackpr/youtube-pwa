@@ -3,16 +3,34 @@
     <!-- todo: extract to list component and style -->
     <!-- playlist -->
     <v-col v-if="hasPlaylist" cols="12" md="3">
-      <div class="title">
-        {{ listTitle }}
-      </div>
-      <div class="subheading">
-        {{ listSum }} videos - {{ playlist.views }} views
-      </div>
-      <div class="subheading">
-        {{ playlist.last_updated }}
-      </div>
-      <v-btn @click="deletePlaylist">delete</v-btn>
+      <v-container>
+        <div class="title">
+          {{ listTitle }}
+        </div>
+        <div class="subheading">
+          {{ listSum }} videos - {{ playlist.views }} views
+        </div>
+        <div class="subheading">
+          {{ playlist.last_updated }}
+        </div>
+      </v-container>
+      <v-container>
+        <v-btn rounded nuxt :to="firstItemUrl" :disabled="!hasPlaylistItems">
+          <v-icon>mdi-play-circle-outline</v-icon>
+        </v-btn>
+        <v-btn
+          rounded
+          nuxt
+          :to="randomItemUrl"
+          :disabled="!hasPlaylistItems"
+          class="ml-2"
+        >
+          <v-icon>mdi-shuffle-variant</v-icon>
+        </v-btn>
+      </v-container>
+      <v-container>
+        <v-btn @click="deletePlaylist">delete</v-btn>
+      </v-container>
     </v-col>
     <v-col v-if="hasPlaylistItems" cols="12" md="9">
       <v-row v-for="video in playlist.items" :key="video.id">
@@ -28,6 +46,7 @@
 import _get from 'lodash.get'
 import OfflineListItem from '~/components/OfflineListItem.vue'
 import { mapGetters } from 'vuex'
+import random from 'lodash/random'
 
 export default {
   name: 'OfflineListPage',
@@ -60,6 +79,18 @@ export default {
         return this.playlist.items.length
       }
       return null
+    },
+    firstItemUrl() {
+      if (!this.hasPlaylistItems) return null
+      const itemId = this.playlist.items[0].id
+      return `/offline/video?v=${itemId}&list=${this.playlist.id}`
+    },
+    randomItemUrl() {
+      if (!this.hasPlaylistItems) return null
+      const itemsLength = this.playlist.items.length
+      const randomIndex = random(itemsLength - 1)
+      const itemId = _get(this.playlist, `items[${randomIndex}].id`)
+      return `/offline/video?v=${itemId}&list=${this.playlist.id}&shuffle=true`
     }
   },
   methods: {
