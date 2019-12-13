@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "alias": "youtube-pwa.now.sh",
   "builds": [
     {
       "src": "nuxt.config.js",
