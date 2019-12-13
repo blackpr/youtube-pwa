@@ -117,21 +117,6 @@ export default {
         this.playlist && this.playlist.items && this.playlist.items.length > 0
       )
     },
-    // shufflePlayList() {
-    //   if (!this.hasPlaylist) return this.playlist
-    //   const playlistCopy = cloneDeep(this.playlist)
-    //   const selecteVideoIndex = playlistCopy.items.findIndex(
-    //     video => video.id === this.videoId
-    //   )
-    //   pullAt(playlistCopy.items, [selecteVideoIndex])
-    //   playlistCopy.items = shuffle(playlistCopy.items)
-    //   playlistCopy.items = [this.video, ...playlistCopy.items]
-    //   return playlistCopy
-    // },
-    // playlistComputed() {
-    //   if (!this.hasPlaylist) return this.playlist
-    //   return this.isShuffle ? this.shufflePlayList : this.playlist
-    // },
     description() {
       return _get(this.video, 'description')
     },
@@ -164,7 +149,6 @@ export default {
     }
   },
   mounted() {
-    console.log('mounted')
     this.isShuffle = this.$route.query.shuffle || false
 
     if (this.hasPlaylist) {
