@@ -82,8 +82,11 @@ export default async ({ $axios, store }, inject) => {
   }
 
   async function getVideosResults() {
+    let preferAudio = _get(window, '$nuxt.$store.state.ui.preferAudio', false)
     let videosPromises = playlistVideoIds.map(id =>
-      $axios.$get(`/getInfo/video/${id}`)
+      $axios.$get(
+        `/getInfo/video/${id}${preferAudio ? '?preferAudio=true' : ''}`
+      )
     )
     state.loadingVideos = true
     videosResults = await Promise.all(videosPromises)

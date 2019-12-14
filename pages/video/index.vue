@@ -85,6 +85,7 @@
 <script>
 import VideoPlayer from '~/components/VideoPlayer'
 import _get from 'lodash.get'
+import { mapState } from 'vuex'
 
 export default {
   name: 'VideoIdPage',
@@ -99,6 +100,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('ui', ['preferAudio']),
     title() {
       return _get(this.video, 'info.title')
     },
@@ -167,7 +169,11 @@ export default {
       let videoId = this.$route.query.v
       let playlistId = this.$route.query.list
       if (playlistId) {
-        let videoPromise = this.$axios.$get(`/getInfo/video/${videoId}`)
+        let videoPromise = this.$axios.$get(
+          `/getInfo/video/${videoId}${
+            this.preferAudio ? '?preferAudio=true' : ''
+          }`
+        )
         let playlistPromise = this.$axios.$get(
           `/getInfo/playlist/${playlistId}`
         )
@@ -180,7 +186,11 @@ export default {
         this.playlist = playlist
       } else {
         try {
-          let video = await this.$axios.$get(`/getInfo/video/${videoId}`)
+          let video = await this.$axios.$get(
+            `/getInfo/video/${videoId}${
+              this.preferAudio ? '?preferAudio=true' : ''
+            }`
+          )
           // return { video }
           this.video = video
         } catch (error) {

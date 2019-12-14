@@ -1,13 +1,19 @@
 <template>
   <v-row align="center">
     <v-col class="video-col">
-      <video ref="player" class="video-player" controls autoplay />
+      <video
+        ref="player"
+        :class="preferAudio ? '' : 'full-width'"
+        controls
+        autoplay
+      />
     </v-col>
   </v-row>
 </template>
 
 <script>
 import _get from 'lodash.get'
+import { mapState } from 'vuex'
 
 export default {
   name: 'VideoPlayer',
@@ -30,6 +36,7 @@ export default {
     }
   },
   computed: {
+    ...mapState('ui', ['preferAudio']),
     thumbnails() {
       let tumbs = _get(
         this.video,
@@ -122,7 +129,7 @@ export default {
 </script>
 
 <style scopped>
-.video-player {
+.full-width {
   width: 100%;
 }
 .video-col {

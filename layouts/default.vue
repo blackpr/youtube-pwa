@@ -79,6 +79,21 @@
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         <span class="hidden-sm-and-down">Youtube PWA</span>
       </v-toolbar-title>
+      <v-spacer> </v-spacer>
+      <v-switch
+        label="Prefer Audio"
+        hide-details
+        :input-value="preferAudio"
+        @change="onPreferAudio"
+      ></v-switch>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <v-icon class="ml-2" v-on="on">mdi-information-outline</v-icon>
+        </template>
+        <span>
+          When enabled highest quality, audio only files will be prefered
+        </span>
+      </v-tooltip>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -125,6 +140,7 @@ export default {
   computed: {
     ...mapState('offline', ['playlists', 'videos']),
     ...mapGetters('offline', ['playlistsMap']),
+    ...mapState('ui', ['preferAudio']),
     menuItems() {
       if (this.playlists && this.playlists.length) {
         const playlistsMenu = this.playlists.map(item => {
@@ -164,6 +180,9 @@ export default {
       })
     }
   },
+  created() {
+    this.$store.commit('ui/loadPreferAudioFromStorage')
+  },
 
   methods: {
     refreshApp() {
@@ -176,6 +195,9 @@ export default {
     },
     async cancelPendingFetches() {
       return this.$cancelPendingBgFetches()
+    },
+    onPreferAudio(status) {
+      this.$store.commit('ui/setPreferAudio', status)
     }
   }
 }

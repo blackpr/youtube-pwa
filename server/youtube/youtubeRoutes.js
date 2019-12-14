@@ -53,15 +53,25 @@ router.get('/proxy/:videoId', async (req, res) => {
 
 router.get('/video/:videoId', async (req, res) => {
   let videoId = req.params.videoId
+  let preferAudio = req.query.preferAudio
   if (videoId) {
     let isValidId = ytdl.validateID(videoId)
     if (isValidId) {
       try {
         let info = await ytdl.getInfo(videoId)
-        let filteredFormats = ytdl.chooseFormat(info.formats, {
-          quality: 'highest',
-          filter: 'audioandvideo'
-        })
+        let filterOptions
+        if (preferAudio) {
+          filterOptions = {
+            quality: 'highestaudio',
+            filter: 'audioonly'
+          }
+        } else {
+          filterOptions = {
+            quality: 'highest',
+            filter: 'audioandvideo'
+          }
+        }
+        let filteredFormats = ytdl.chooseFormat(info.formats, filterOptions)
         res.json({ filteredFormats, info })
       } catch (error) {
         res.status(500).json({ error: 'ytdl err' })
