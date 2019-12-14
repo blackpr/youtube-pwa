@@ -124,10 +124,7 @@ export default async ({ $axios, store }, inject) => {
           []
         ),
         playlistId: state.playlist.id,
-        url: `https://cors-anywhere.herokuapp.com/${_get(
-          vr,
-          'filteredFormats.url'
-        )}`,
+        url: `https://ytpwa.glitch.me/${_get(vr, 'filteredFormats.url')}`,
         contentLength: _get(vr, 'filteredFormats.contentLength')
       }))
 

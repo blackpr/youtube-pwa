@@ -1,6 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const youtubeRoutes = require('./youtube/youtubeRoutes')
+const cors_proxy = require('cors-anywhere')
 
 // if (process.env.NODE_ENV === 'development') require('dotenv').config()
 
@@ -13,6 +14,28 @@ const app = express()
 app.use(bodyParser.json())
 // Define server routes
 // app.use(apiRoutes)
+
+let proxy = cors_proxy.createServer({
+  //originWhitelist: ['http://localhost:3000'], //use for dev
+  originWhitelist: [
+    'http://youtube-pwa.now.sh',
+    'https://youtube-pwa.blackpr.now.sh/'
+  ], // Allow origins
+  requireHeader: ['origin', 'x-requested-with'],
+  removeHeaders: ['cookie']
+})
+
+/* Attach our cors proxy to the existing API on the /proxy endpoint. */
+app.get('/proxy/:proxyUrl*', (req, res) => {
+  req.url = req.url.replace('/proxy/', '/')
+  // hack for zeit now
+  if (!req.url.startsWith('/https://')) {
+    console.log('if')
+    req.url = req.url.replace('/https:/', '/https://')
+  }
+  proxy.emit('request', req, res)
+})
+
 app.use('/getInfo', youtubeRoutes)
 
 export default [
