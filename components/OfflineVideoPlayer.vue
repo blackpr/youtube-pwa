@@ -3,7 +3,7 @@
     <v-col class="video-col">
       <video
         ref="player"
-        :class="preferAudio ? '' : 'full-width'"
+        :class="preferAudio ? 'max-width' : 'full-width'"
         class="video-player"
         controls
         autoplay
@@ -138,6 +138,9 @@ export default {
 <style scopped>
 .full-width {
   width: 100%;
+}
+.max-width {
+  max-width: 100%;
 }
 .video-col {
   text-align: center;
