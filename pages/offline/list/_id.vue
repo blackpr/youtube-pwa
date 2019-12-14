@@ -5,6 +5,14 @@
     <v-col v-if="hasPlaylist" cols="12" md="3">
       <v-container>
         <div class="title">
+          <v-tooltip top>
+            <template v-slot:activator="{ on }">
+              <v-btn icon nuxt :to="`/playlist/${playlist.id}`" v-on="on">
+                <v-icon>mdi-link</v-icon>
+              </v-btn>
+            </template>
+            <span>open online playlist</span>
+          </v-tooltip>
           {{ listTitle }}
         </div>
         <div class="subheading">
