@@ -72,6 +72,9 @@
       </template>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app>
+      <v-btn v-if="canGoBack" icon @click="$router.back()">
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
         <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         <span class="hidden-sm-and-down">Youtube PWA</span>
@@ -144,6 +147,9 @@ export default {
       } else {
         return [...this.items]
       }
+    },
+    canGoBack() {
+      return window.history.length > 0
     }
   },
 
