@@ -145,6 +145,21 @@ module.exports = {
     }
   },
   build: {
+    // disable code splitting for better offline caching
+    // https://github.com/nuxt/nuxt.js/pull/3060
+    // https://nuxtjs.org/api/configuration-build/#optimization
+    optimization: {
+      splitChunks: {
+        chunks: 'async'
+      }
+    },
+    splitChunks: {
+      pages: false,
+      vendor: true,
+      commons: true,
+      runtime: false,
+      layouts: false
+    },
     // transpile: ['vuetify/lib'],
     // plugins: [new VuetifyLoaderPlugin()],
     // loaders: {
