@@ -4,7 +4,6 @@
       <video
         ref="player"
         :class="preferAudio ? 'max-width' : 'full-width'"
-        class="video-player"
         controls
         autoplay
       />
