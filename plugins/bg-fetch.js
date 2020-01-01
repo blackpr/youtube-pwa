@@ -89,7 +89,14 @@ export default async ({ $axios, store }, inject) => {
       )
     )
     state.loadingVideos = true
-    videosResults = await Promise.all(videosPromises)
+    for (const vp of videosPromises) {
+      try {
+        const res = await vp
+        videosResults.push(res)
+      } catch (e) {
+        console.log('skipping this one: ', e)
+      }
+    }
     state.loadingVideos = false
   }
 
