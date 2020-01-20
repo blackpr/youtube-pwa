@@ -124,6 +124,7 @@
 import { mapState, mapGetters } from 'vuex'
 
 export default {
+  name: 'DefaultLayout',
   data() {
     return {
       clipped: false,
@@ -133,7 +134,8 @@ export default {
       miniVariant: false,
       title: 'Youtube pwa client',
       snackbar: false,
-      snackBarText: null
+      snackBarText: null,
+      historyLength: window.history.length
     }
   },
 
@@ -165,7 +167,13 @@ export default {
       }
     },
     canGoBack() {
-      return window.history.length > 1
+      return this.historyLength > 2
+    }
+  },
+
+  watch: {
+    $route() {
+      this.historyLength = window.history.length
     }
   },
 
