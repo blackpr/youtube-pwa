@@ -167,7 +167,7 @@ export default {
       }
     },
     canGoBack() {
-      return this.historyLength > 2
+      return this.historyLength > 1
     }
   },
 
