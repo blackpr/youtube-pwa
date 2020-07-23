@@ -91,6 +91,7 @@ export default {
     let playlistId = params.id
     try {
       let playlist = await $axios.$get(`/getInfo/playlist/${playlistId}`)
+      console.log({ playlist })
       return { playlist }
     } catch (error) {
       console.log(error)

@@ -119,9 +119,9 @@ export default {
       )
     },
     date() {
-      let timestamp = _get(this.video, 'info.timestamp')
+      let timestamp = _get(this.video, 'info.publishDate')
       if (timestamp) {
-        let date = new Date(timestamp * 1000)
+        let date = new Date(timestamp)
         return date.toLocaleDateString('en-US')
       }
       return null

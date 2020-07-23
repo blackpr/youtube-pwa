@@ -120,19 +120,16 @@ export default async ({ $axios, store }, inject) => {
 
     if (videosResults && videosResults.length) {
       state.videosWithUrls = videosResults.map(vr => ({
-        id: _get(vr, 'info.video_id'),
-        title: _get(vr, 'info.title'),
-        views: _get(vr, 'info.player_response.videoDetails.viewCount'),
-        authorImage: _get(vr, 'info.author.avatar'),
-        authorName: _get(vr, 'info.author.user'),
-        timestamp: _get(vr, 'info.timestamp'),
-        description: _get(vr, 'info.description', ''),
+        id: _get(vr, 'info.videoDetails.videoId'),
+        title: _get(vr, 'info.videoDetails.title'),
+        views: _get(vr, 'info.videoDetails.viewCount'),
+        authorImage: _get(vr, 'info.videoDetails.author.avatar'),
+        authorName: _get(vr, 'info.videoDetails.author.name'),
+        // timestamp: _get(vr, 'info.timestamp'),
+        publishDate: _get(vr, 'info.videoDetails.publishDate'),
+        description: _get(vr, 'info.videoDetails.description.simpleText', ''),
         thumbnail: getThumbnail(vr),
-        thumbnails: _get(
-          vr,
-          'info.player_response.videoDetails.thumbnail.thumbnails',
-          []
-        ),
+        thumbnails: _get(vr, 'info.videoDetails.thumbnail.thumbnails', []),
         playlistId: state.playlist.id,
         url: `https://cors-anywhere.herokuapp.com/${_get(
           vr,
