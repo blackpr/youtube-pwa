@@ -18,8 +18,8 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "now:deploy": "vercel",
-    "now:deploy:production": "vercel --prod"
+    "vercel:deploy": "vercel",
+    "vercel:deploy:production": "vercel --prod"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
