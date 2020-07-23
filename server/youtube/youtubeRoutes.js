@@ -59,11 +59,14 @@ router.get('/video/:videoId', async (req, res) => {
     if (isValidId) {
       try {
         let info = await ytdl.getInfo(videoId)
+        console.log(info.formats)
         let filterOptions
         if (preferAudio) {
           filterOptions = {
-            quality: 'highestaudio',
-            filter: 'audioonly'
+            quality: 'highest'
+            // quality: 'highestaudio',
+            // filter: format => format.codecs === 'aac'
+            // filter: 'audioonly'
           }
         } else {
           filterOptions = {
