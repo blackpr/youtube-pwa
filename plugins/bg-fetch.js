@@ -109,7 +109,7 @@ export default async ({ $axios, store }, inject) => {
 
   function getThumbnail(video) {
     const playlistItem = _get(state.playlist, 'items', []).find(
-      pi => pi.id === _get(video, 'info.video_id')
+      pi => pi.id === _get(video, 'info.videoDetails.videoId')
     )
     return _get(playlistItem, 'thumbnail', '')
   }
