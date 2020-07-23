@@ -91,7 +91,8 @@
           <v-icon class="ml-2" v-on="on">mdi-information-outline</v-icon>
         </template>
         <span>
-          When enabled highest quality, audio only files will be prefered
+          (temporary not working) When enabled highest quality, audio only files
+          will be prefered
         </span>
       </v-tooltip>
     </v-app-bar>
