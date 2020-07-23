@@ -59,7 +59,6 @@ router.get('/video/:videoId', async (req, res) => {
     if (isValidId) {
       try {
         let info = await ytdl.getInfo(videoId)
-        console.log(info.formats)
         let filterOptions
         if (preferAudio) {
           filterOptions = {
