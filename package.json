@@ -39,7 +39,7 @@
     "ytsr": "^0.1.18"
   },
   "devDependencies": {
-    "@nuxtjs/vuetify": "^1.9.0",
+    "@nuxtjs/vuetify": "^1.11.2",
     "@vue/eslint-config-prettier": "^5.0.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^5.16.0",
