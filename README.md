@@ -1,6 +1,6 @@
 # youtube-pwa
 
-> ytpwa is an experimental client for youtube
+> [wip] ytpwa is an experimental client for youtube
 
 ## Why?
 
