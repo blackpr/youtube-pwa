@@ -34,9 +34,9 @@
     "lodash.uniqby": "^4.7.0",
     "node-fetch": "^2.6.0",
     "nuxt": "^2.13.3",
-    "ytdl-core": "^3.1.2",
-    "ytpl": "^0.2.0",
-    "ytsr": "^0.1.18"
+    "ytdl-core": "^3.4.1",
+    "ytpl": "^1.0.1",
+    "ytsr": "^1.0.4"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2",
