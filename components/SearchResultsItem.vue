@@ -3,7 +3,15 @@
     <v-card class="pa-2">
       <span class="d-md-flex">
         <v-img
-          :src="item.thumbnail || item.avatar || (item.bestThumbnail && item.bestThumbnail.url) ||  (item.bestAvatar && item.bestAvatar.url) || (item.firstVideo && item.firstVideo.bestThumbnail && item.firstVideo.bestThumbnail.url)"
+          :src="
+            item.thumbnail ||
+              item.avatar ||
+              (item.bestThumbnail && item.bestThumbnail.url) ||
+              (item.bestAvatar && item.bestAvatar.url) ||
+              (item.firstVideo &&
+                item.firstVideo.bestThumbnail &&
+                item.firstVideo.bestThumbnail.url)
+          "
           height="125px"
           max-width="250px"
           contain
@@ -62,7 +70,8 @@ export default {
       } views - ${this.item.uploadedAt} - ${this.item.duration}`
     },
     playlistSubtitle() {
-      return `playlist - ${(this.item.author && this.item.author.name) || this.item && this.item.owner && this.item.owner.name} - ${
+      return `playlist - ${(this.item.author && this.item.author.name) ||
+        (this.item && this.item.owner && this.item.owner.name)} - ${
         this.item.length
       }`
     }
