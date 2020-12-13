@@ -6,7 +6,7 @@
     <v-card :loading="isDownloading">
       <span class="d-md-flex">
         <v-img
-          :src="video.thumbnail"
+          :src="video.bestThumbnail && video.bestThumbnail.url"
           height="125px"
           max-width="250px"
           contain

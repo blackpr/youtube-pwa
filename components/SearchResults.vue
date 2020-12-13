@@ -39,11 +39,11 @@ export default {
         if (video.type === 'channel') {
           id = video.channel_id
         } else if (video.type === 'video') {
-          let url = new URL(video.link)
+          let url = new URL(video.url)
           let params = new URLSearchParams(url.search)
           id = params.get('v')
         } else if (video.type === 'playlist') {
-          let url = new URL(video.link)
+          let url = new URL(video.url)
           let params = new URLSearchParams(url.search)
           id = params.get('list')
         }

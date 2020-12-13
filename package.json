@@ -34,9 +34,9 @@
     "lodash.uniqby": "^4.7.0",
     "node-fetch": "^2.6.0",
     "nuxt": "^2.13.3",
-    "ytdl-core": "^3.4.1",
-    "ytpl": "^1.0.1",
-    "ytsr": "^1.0.4"
+    "ytdl-core": "^4.1.4",
+    "ytpl": "^2.0.0",
+    "ytsr": "^2.0.0"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2",
@@ -53,5 +53,9 @@
     "sass-loader": "^9.0.2",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2"
+  },
+  "volta": {
+    "node": "14.15.1",
+    "yarn": "1.22.10"
   }
 }
