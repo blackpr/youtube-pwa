@@ -18,8 +18,8 @@ app.use(bodyParser.json())
 let proxy = cors_proxy.createServer({
   //originWhitelist: ['http://localhost:3000'], //use for dev
   originWhitelist: [
-    'http://youtube-pwa.now.sh',
-    'https://youtube-pwa.blackpr.now.sh/'
+    'https://youtube-pwa.vercel.app/',
+    'https://youtube-pwa.vercel.app/'
   ], // Allow origins
   requireHeader: ['origin', 'x-requested-with'],
   removeHeaders: ['cookie']

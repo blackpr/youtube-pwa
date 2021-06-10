@@ -131,10 +131,7 @@ export default async ({ $axios, store }, inject) => {
         thumbnail: getThumbnail(vr),
         thumbnails: _get(vr, 'info.videoDetails.thumbnail.thumbnails', []),
         playlistId: state.playlist.id,
-        url: `https://cors-anywhere.herokuapp.com/${_get(
-          vr,
-          'filteredFormats.url'
-        )}`,
+        url: `${process.env.PROXY_URL}${_get(vr, 'filteredFormats.url')}`,
         contentLength: _get(vr, 'filteredFormats.contentLength')
       }))
 
