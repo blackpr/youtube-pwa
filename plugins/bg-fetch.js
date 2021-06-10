@@ -111,7 +111,7 @@ export default async ({ $axios, store }, inject) => {
     const playlistItem = _get(state.playlist, 'items', []).find(
       pi => pi.id === _get(video, 'info.videoDetails.videoId')
     )
-    return _get(playlistItem, 'thumbnail', '')
+    return _get(playlistItem, 'bestThumbnail.url', '')
   }
 
   async function setupBgFetch(playlist) {
@@ -119,30 +119,38 @@ export default async ({ $axios, store }, inject) => {
     if (!state.canDownload) return
 
     if (videosResults && videosResults.length) {
-      state.videosWithUrls = videosResults.map(vr => ({
-        id: _get(vr, 'info.videoDetails.videoId'),
-        title: _get(vr, 'info.videoDetails.title'),
-        views: _get(vr, 'info.videoDetails.viewCount'),
-        authorImage: _get(vr, 'info.videoDetails.author.avatar'),
-        authorName: _get(vr, 'info.videoDetails.author.name'),
-        // timestamp: _get(vr, 'info.timestamp'),
-        publishDate: _get(vr, 'info.videoDetails.publishDate'),
-        description: _get(vr, 'info.videoDetails.description.simpleText', ''),
-        thumbnail: getThumbnail(vr),
-        thumbnails: _get(vr, 'info.videoDetails.thumbnail.thumbnails', []),
-        playlistId: state.playlist.id,
-        url: `https://xtream-proxy.blackpr.workers.dev/?${_get(
-          vr,
-          'filteredFormats.url'
-        )}`,
-        contentLength: _get(vr, 'filteredFormats.contentLength')
-      }))
+      state.videosWithUrls = videosResults.map(vr => {
+        const v = {
+          id: _get(vr, 'info.videoDetails.videoId'),
+          title: _get(vr, 'info.videoDetails.title'),
+          views: _get(vr, 'info.videoDetails.viewCount'),
+          authorImage: _get(
+            vr,
+            'info.videoDetails.author.thumbnails[0].url',
+            ''
+          ),
+          authorName: _get(vr, 'info.videoDetails.author.name'),
+          // timestamp: _get(vr, 'info.timestamp'),
+          publishDate: _get(vr, 'info.videoDetails.publishDate'),
+          description: _get(vr, 'info.videoDetails.description', ''),
+          thumbnail: getThumbnail(vr),
+          thumbnails: _get(vr, 'info.videoDetails.thumbnails', []),
+          playlistId: state.playlist.id,
+          url: `https://xtream-proxy.blackpr.workers.dev/?${_get(
+            vr,
+            'filteredFormats.url'
+          )}`,
+          contentLength: _get(vr, 'filteredFormats.contentLength')
+        }
+        return v
+      })
 
       offlinedb = await setupIdb()
       const playlistInfo = {
         id: state.playlist.id,
         title: state.playlist.title
       }
+      console.log({ playlist })
       await offlinedb.put('playlists', playlistInfo)
       store.commit('offline/addPlaylist', playlistInfo)
 
