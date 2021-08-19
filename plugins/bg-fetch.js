@@ -136,7 +136,7 @@ export default async ({ $axios, store }, inject) => {
           thumbnail: getThumbnail(vr),
           thumbnails: _get(vr, 'info.videoDetails.thumbnails', []),
           playlistId: state.playlist.id,
-          url: `https://cors.ryanking13.workers.dev/?u=${encodeURIComponent(
+          url: `https://square-dawn-6a23.blackpr.workers.dev?q=${encodeURIComponent(
             _get(vr, 'filteredFormats.url')
           )}`,
           contentLength: _get(vr, 'filteredFormats.contentLength')
