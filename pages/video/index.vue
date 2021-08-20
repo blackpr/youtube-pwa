@@ -42,7 +42,7 @@
       <v-col v-for="vid in playlist.items" :key="vid.id" cols="12" md="4">
         <nuxt-link :to="`/video?v=${vid.id}`">
           <v-card class="mx-auto" height="100%">
-            <v-img :src="vid.thumbnail" height="125px"> </v-img>
+            <v-img :src="lget(vid, 'thumbnails.0.url')" height="125px"> </v-img>
             <v-card-title>
               {{ vid.title }}
             </v-card-title>
@@ -63,14 +63,18 @@
         >
           <v-card class="mx-auto" height="100%">
             <v-img
-              :src="vid.video_thumbnail || vid.iurlmq || vid.playlist_iurlhq"
+              :src="
+                lget(vid, 'thumbnails.0.url') ||
+                  lget(vid, 'iurlmq') ||
+                  lget(vid, 'playlist_iurlhq')
+              "
               height="125px"
             />
             <v-card-title>
               {{ vid.title || vid.playlist_title }}
             </v-card-title>
             <v-card-subtitle pb-0>
-              <div>{{ vid.author || 'playlist' }}</div>
+              <div>{{ lget(vid, 'author.name') || 'playlist' }}</div>
               <div>
                 {{ vid.short_view_count_text || vid.playlist_length }}
               </div>
@@ -102,16 +106,16 @@ export default {
   computed: {
     ...mapState('ui', ['preferAudio']),
     title() {
-      return _get(this.video, 'info.title')
+      return _get(this.video, 'info.videoDetails.title')
     },
     views() {
-      return _get(this.video, 'info.player_response.videoDetails.viewCount')
+      return _get(this.video, 'info.videoDetails.viewCount')
     },
     authorImage() {
-      return _get(this.video, 'info.author.avatar')
+      return _get(this.video, 'info.videoDetails.author.thumbnails[0].url')
     },
     authorName() {
-      return _get(this.video, 'info.author.user')
+      return _get(this.video, 'info.videoDetails.author.name')
     },
     hasPlaylist() {
       return (
@@ -127,7 +131,7 @@ export default {
       return null
     },
     description() {
-      return _get(this.video, 'info.description', '')
+      return _get(this.video, 'info.videoDetails.description', '')
     },
     descriptionShort() {
       if (!this.description) return ''
@@ -165,6 +169,9 @@ export default {
     }
   },
   methods: {
+    lget(obj, prop) {
+      return _get(obj, prop)
+    },
     async fetchVideoFromQuery() {
       let videoId = this.$route.query.v
       let playlistId = this.$route.query.list
